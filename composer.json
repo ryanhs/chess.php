@@ -1,0 +1,25 @@
+{
+    "name": "ryanhs/chess.php",
+    "description": "chess.php is a PHP chess library that is used for chess move generation/validation, piece placement/movement, and check/checkmate/stalemate detection - basically everything but the AI. NOTE: this is a port of chess.js for php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ryan hs",
+            "email": "mr.ryansilalahi@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+		"psr-4": {
+			"Ryanhs\\Chess\\": "src/"
+		}
+	},
+	"scripts": {
+		"test": "phpunit test/"
+	}
+}
