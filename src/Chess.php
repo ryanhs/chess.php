@@ -64,10 +64,10 @@ class Chess
 	];
 
 	const ROOKS = [
-		'w' => [['square' => self::SQUARES['a1'], 'flag' => self::BITS['QSIDE_CASTLE']],
-				['square' => self::SQUARES['h1'], 'flag' => self::BITS['KSIDE_CASTLE']]],
-		'b' => [['square' => self::SQUARES['a8'], 'flag' => self::BITS['QSIDE_CASTLE']],
-				['square' => self::SQUARES['h8'], 'flag' => self::BITS['KSIDE_CASTLE']]]
+		self::WHITE => [['square' => self::SQUARES['a1'], 'flag' => self::BITS['QSIDE_CASTLE']],
+						['square' => self::SQUARES['h1'], 'flag' => self::BITS['KSIDE_CASTLE']]],
+		self::BLACK => [['square' => self::SQUARES['a8'], 'flag' => self::BITS['QSIDE_CASTLE']],
+						['square' => self::SQUARES['h8'], 'flag' => self::BITS['KSIDE_CASTLE']]]
 	];
 	
 	
@@ -79,7 +79,7 @@ class Chess
 	protected $halfMoves;
 	protected $moveNumber;
 	protected $history;
-	protected $heade;
+	protected $header;
 	
 	public function __construct($fen = null)
 	{
@@ -92,9 +92,9 @@ class Chess
 	protected function init()
 	{
 		$this->board		= [];
-		$this->kings		= ['w' => null, 'b' => null];
+		$this->kings		= [self::WHITE => null, self::BLACK => null];
 		$this->turn 		= self::WHITE;
-		$this->castling		= ['w' => 0, 	'b' => 0];
+		$this->castling		= [self::WHITE => 0, 	self::BLACK => 0];
 		$this->epSquare		= null;
 		$this->halfMoves	= 0;
 		$this->moveNumber	= 1;
@@ -102,6 +102,18 @@ class Chess
 		$this->header		= [];
 		
 		for($i = 0; $i < 120; $i++) $this->board[$i] = null;
+	}
+	
+	protected function updateSetup($fen)
+	{
+		if (count($this->history) > 0) return;
+		if ($fen !== self::DEFAULT_POSITION) {
+			$this->header['SetUp'] = '1';
+			$this->header['FEN'] = $fen;
+		} else {
+			unset($this->header['SetUp']);
+			unset($this->header['FEN']);
+		}
 	}
 	
 	public function load($fen)
@@ -134,13 +146,13 @@ class Chess
 		}
 		
 		// turn
-		$turn = $tokens[1];
+		$this->turn = $tokens[1];
 		
 		// castling options
-		if (strpos($tokens[2], 'K') !== false) $this->castling['w'] |= self::BITS['KSIDE_CASTLE'];
-		if (strpos($tokens[2], 'Q') !== false) $this->castling['w'] |= self::BITS['QSIDE_CASTLE'];
-		if (strpos($tokens[2], 'k') !== false) $this->castling['b'] |= self::BITS['KSIDE_CASTLE'];
-		if (strpos($tokens[2], 'q') !== false) $this->castling['b'] |= self::BITS['QSIDE_CASTLE'];
+		if (strpos($tokens[2], 'K') !== false) $this->castling[self::WHITE] |= self::BITS['KSIDE_CASTLE'];
+		if (strpos($tokens[2], 'Q') !== false) $this->castling[self::WHITE] |= self::BITS['QSIDE_CASTLE'];
+		if (strpos($tokens[2], 'k') !== false) $this->castling[self::BLACK] |= self::BITS['KSIDE_CASTLE'];
+		if (strpos($tokens[2], 'q') !== false) $this->castling[self::BLACK] |= self::BITS['QSIDE_CASTLE'];
 		
 		// ep square
 		$this->epSquare = ($tokens[3] === '-') ? null : self::SQUARES[$tokens[3]];
@@ -151,7 +163,7 @@ class Chess
 		// move number
 		$this->moveNumber = intval($tokens[5], 10);
 		
-		//~ $this->updateSetup($this->generateFen());
+		$this->updateSetup($this->generateFen());
 		return true;
 	}
 	
@@ -161,6 +173,48 @@ class Chess
 	}
 	
 	
+	public function fen()
+	{
+		$empty = 0;
+		$fen = '';
+		for ($i = self::SQUARES['a8']; $i <= self::SQUARES['h1']; $i++) {
+			if ($this->board[$i] === null) {
+				$empty++;
+			} else {
+				if ($empty > 0) {
+					$fen .= $empty;
+					$empty = 0;
+				}
+				$color = $this->board[$i]['color'];
+				$piece = $this->board[$i]['type'];
+				$fen .= $color === self::WHITE ? strtoupper($piece) : strtolower($piece);
+			}
+			
+			if (($i + 1) & 0x88) {
+				if ($empty > 0) $fen .= $empty;
+				if ($i !== self::SQUARES['h1']) $fen .= '/';
+				$empty = 0;
+				$i += 8;
+			}
+		}
+		
+		$cFlags = '';
+		if ($this->castling[self::WHITE] & self::BITS['KSIDE_CASTLE']) $cFlags .= 'K';
+		if ($this->castling[self::WHITE] & self::BITS['QSIDE_CASTLE']) $cFlags .= 'Q';
+		if ($this->castling[self::BLACK] & self::BITS['KSIDE_CASTLE']) $cFlags .= 'k';
+		if ($this->castling[self::BLACK] & self::BITS['QSIDE_CASTLE']) $cFlags .= 'q';
+		if ($cFlags == '') $cFlags = '-';
+		
+		$epFlags = $this->epSquare === null ? '-' : self::algebraic($this->epSquare);
+		
+		return implode(' ', [$fen, $this->turn, $cFlags, $epFlags, $this->halfMoves, $this->moveNumber]);
+	}
+	
+	// just an alias
+	public function generateFen()
+	{
+		return $this->fen();
+	}
 	
 	static public function validateFen($fen)
 	{
@@ -236,6 +290,11 @@ class Chess
 		return ['valid' => true, 'error_number' => 0, 'error' => 'No errors.'];
 	}
 	
+	public function get($square)
+	{
+		return $this->board[self::SQUARES[$square]]; // shorcut?
+	}
+	
 	public function put($piece, $square)
 	{
 		// check for valid piece object
@@ -257,7 +316,7 @@ class Chess
 			$this->kings[$piece['color']] = $sq;
 		}
 		
-		//~ $this->updateSetup($this->generateFen());
+		$this->updateSetup($this->generateFen());
 		return true;
 	}
 	

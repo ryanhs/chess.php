@@ -6,7 +6,7 @@ use \Ryanhs\Chess\Chess;
 
 class FenTest extends \PHPUnit_Framework_TestCase
 {
-	public function testload()
+	public function testLoad()
 	{
 		$positions = [
 			// original from chess.js test
@@ -32,7 +32,7 @@ class FenTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 	
-	public function testvalidate()
+	public function testValidate()
 	{
 		$positions = [
 			// 1st criterion: 6 space-separated fields
@@ -229,5 +229,42 @@ class FenTest extends \PHPUnit_Framework_TestCase
 			$this->assertEquals($load['valid'], $position['should_pass']);
 		}
 	}
+	
+	public function testGeneration()
+	{
+		$positions = [
+			['fen' => Chess::DEFAULT_POSITION, 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'rnbqkb1r/ppp2ppp/3p1n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 4', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '3r1rk1/Qpp2p1p/7q/1P2P1p1/2B1Rn2/6NP/P4P1P/5RK1 b - - 0 22', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'rn2kb1r/2qp1ppp/b3pn2/2pP2B1/1pN1P3/5P2/PP4PP/R2QKBNR w KQkq - 4 11', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r3k2r/pp1nbp1p/2p2pb1/3p4/3P3N/2N1P3/PP3PPP/R3KB1R w KQkq - 4 12', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'rn1qr1k1/pbppbppp/1p3n2/3P4/8/P1N1P1P1/1P2NPBP/R1BQK2R b KQ - 2 10', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1bqk2r/pp1nbppp/2p2n2/3p2B1/3P4/2N1PN2/PP3PPP/R2QKB1R w KQkq - 1 8', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1bqk2r/pppp1pp1/2n2n1p/8/1bPN3B/2N5/PP2PPPP/R2QKB1R b KQkq - 1 7', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 4 6', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1b1kb1r/p2p1ppp/1qp1p3/3nP3/2P1NP2/8/PP4PP/R1BQKB1R b KQkq c3 0 10', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '8/R7/2b5/3k2K1/P1p1r3/2B5/1P6/8 b - - 8 74', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '2q5/5pk1/5p1p/4b3/1p1pP3/7P/1Pr3P1/R2Q1RK1 w - - 14 37', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r4rk1/1bqnbppp/p2p4/1p2p3/3BPP2/P1NB4/1PP3PP/3RQR1K w - - 0 16', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1bqk2r/pp1n1ppp/2pbpn2/6N1/3P4/3B1N2/PPP2PPP/R1BQK2R w KQkq - 2 8', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'r1b1kb1r/pp3ppp/1qnppn2/8/2B1PB2/1NN5/PPP2PPP/R2QK2R b KQkq - 1 8', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '1r3r1k/2q1n1pb/pn5p/1p2pP2/6B1/PPNRQ2P/2P1N1P1/3R3K b - - 0 28', 'error_number' => 0, 'should_pass' => true],
+			['fen' => 'rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N2N2/PP2PPPP/R2QKB1R b KQkq - 3 5', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '2r3k1/5pp1/p2p3p/1p1Pp2P/5b2/8/qP1K2P1/3QRB1R w - - 0 26', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '6k1/1Q3p2/2p1r3/B1Pn2p1/3P1b1p/5P1P/5P2/5K2 w - - 6 47', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '8/k7/Pr2R3/7p/8/4n1P1/1r2p1P1/4R1K1 w - - 0 59', 'error_number' => 0, 'should_pass' => true],
+			['fen' => '3r1r2/3P2pk/1p1R3p/1Bp2p2/6q1/4Q3/PP3P1P/7K w - - 4 30', 'error_number' => 0, 'should_pass' => true],
+		];
+		
+		
+		$chess = new Chess;
+		foreach($positions as $position){
+			$chess->load($position['fen']);
+			$this->assertEquals($position['fen'], $chess->fen());
+		}
+	}
+	
+	
+	
 	
 }
