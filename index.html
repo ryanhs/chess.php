@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html lang="en-us" class="ie9"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en-us">
+<!--<![endif]-->
+	<head>
+		<title>Chess.php API Documentation</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- iPad retina icon -->
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-152.png">
+		<!-- iPad retina icon (iOS < 7) -->
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-144.png">
+		<!-- iPad non-retina icon -->
+		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-76.png">
+		<!-- iPad non-retina icon (iOS < 7) -->
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-72.png">
+		<!-- iPhone 6 Plus icon -->
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-180.png">
+		<!-- iPhone retina icon (iOS < 7) -->
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-114.png">
+		<!-- iPhone non-retina icon (iOS < 7) -->
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="bower_components/patternfly/dist/img/apple-touch-icon-precomposed-57.png">
+		
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="bower_components/patternfly/dist/js/patternfly.min.js"></script>
+		
+		
+		<link rel="stylesheet" href="assets/style.css" >
+		<script type="text/javascript" src="assets/main.js"></script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-pf" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="">
+					<img src="assets/logo-mini.png" alt="API Documentation" />
+				</a>
+			</div>
+			
+			<div class="collapse navbar-collapse navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-utility">
+					<li><a href="#" onClick="javascript:filesGenerate();return false;">Reload</a></li>
+				</ul>
+			</div>
+		</nav>
+		
+		<div class="container-fluid">
+			<div class="row">
+				
+				
+				
+				
+				
+				<div class="col-sm-9 col-md-10 col-sm-push-3 col-md-push-2">
+					<ol class="breadcrumb">
+						<li>Home</li>
+						<li>Readme</li>
+					</ol>
+					
+					<div id="documentation-page">
+						
+					</div>
+					
+				</div><!-- /col -->
+				
+				<div class="col-sm-3 col-md-2 col-sm-pull-9 col-md-pull-10 sidebar-pf sidebar-pf-left">
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-body">
+							<input type="text" id="search_q" value="" placeholder="search.." class="form-control" />
+							</div>
+						</div>
+					</div>
+<!--
+					<div class="nav-category">
+						<h2>Fen</h2>
+						<ul class="nav nav-pills nav-stacked">
+							<li><a href="#" data-src="files/fen/validate_fen_position.md" data-type="markdown">Validate Fen Position</a></li>
+						</ul>
+					</div>
+-->
+				</div><!-- /col -->
+				
+				<script type="text/javascript" src="bower_components/showdown/dist/showdown.min.js"></script>
+				<script type="text/javascript" src="assets/main.js"></script>
+				
+				
+				
+				
+			</div><!-- /row -->
+		</div><!-- /container -->
+
+	</body>
+</html>
