@@ -290,8 +290,36 @@ class Chess
 		return ['valid' => true, 'error_number' => 0, 'error' => 'No errors.'];
 	}
 	
+	
+	
+	
+	
+	
+	
+	// this one from chess.js changed to return boolean (remove, true or false)
+	public function remove($square)
+	{
+		// check for valid square
+		if (!array_key_exists($square, self::SQUARES)) return false;
+		
+		$piece = $this->get($square);
+		$this->board[self::SQUARES[$square]] = null;
+		
+		if ($piece !== null) {
+			if ($piece['type'] == self::KING) {
+				$this->kings[$piece['color']] = null;
+			}
+		}
+		
+		$this->updateSetup($this->generateFen());
+		return true;
+	}
+	
 	public function get($square)
 	{
+		// check for valid square
+		if (!array_key_exists($square, self::SQUARES)) return null;
+		
 		return $this->board[self::SQUARES[$square]]; // shorcut?
 	}
 	
