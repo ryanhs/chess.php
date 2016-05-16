@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "patternfly": "^3.3.5",
-    "showdown": "^1.4.0"
+    "showdown": "^1.4.0",
+    "highlightjs": "^9.2.0"
   }
 }

@@ -15808,3 +15808,6 @@ table.datatable th:active {
 .breadcrumb li:first-child {
   font-weight: bold;
 }
+.hljs {
+  background: transparent !important;
+}

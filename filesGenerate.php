@@ -32,6 +32,14 @@ foreach($d_lvl1 as $entry) {
 					'name' => formatAlias(substr($entry, 0, -5))
 				];
 			}
+			
+			if(substr($entry, -3) == 'jpg' || substr($entry, -3) == 'png' || substr($entry, -3) == 'gif') {
+				$new['data'][] = [
+					'src' => $path_lvl2 . $entry,
+					'type' => 'image',
+					'name' => formatAlias(substr($entry, 0, -4))
+				];
+			}
 		}
 		$data[] = $new;
 	}
