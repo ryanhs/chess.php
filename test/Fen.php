@@ -6,6 +6,13 @@ use \Ryanhs\Chess\Chess;
 
 class FenTest extends \PHPUnit_Framework_TestCase
 {
+	public function testClear()
+	{		
+		$chess = new Chess();
+		$chess->clear();
+		$this->assertSame($chess->fen(), '8/8/8/8/8/8/8/8 w - - 0 1');
+	}
+	
 	public function testLoad()
 	{
 		$positions = [

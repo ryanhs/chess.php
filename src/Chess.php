@@ -83,13 +83,13 @@ class Chess
 	
 	public function __construct($fen = null)
 	{
-		$this->init();
+		$this->clear();
 		
 		if (strlen(strval($fen)) > 0) $this->load(strval($fen));
 		else $this->reset();
 	}
 	
-	protected function init()
+	public function clear()
 	{
 		$this->board		= [];
 		$this->kings		= [self::WHITE => null, self::BLACK => null];
@@ -120,7 +120,7 @@ class Chess
 	{
 		if (!self::validateFen($fen)['valid']) return false;
 		$tokens = explode(' ', $fen);
-		$this->init();
+		$this->clear();
 		
 		// position
 		$position = $tokens[0];
