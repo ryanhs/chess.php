@@ -1,6 +1,6 @@
-## FEN generation
+## Put
 
-put need 2 parameter:  an array of [type, color] and algebraic square
+put need 2 parameter:  an array of [type, color] and algebraic square, example: `$chess->put($piece, 'e4');`
 
 *type is case insensitive
 
@@ -16,7 +16,7 @@ echo 'FEN => ' . $chess->generateFen() . PHP_EOL;
 echo $chess;
 ```
 will return
-```
+```text
 FEN => 8/8/8/4k3/4Q3/8/8/8 w KQkq - 0 1
    +------------------------+
  8 | .  .  .  .  .  .  .  . |

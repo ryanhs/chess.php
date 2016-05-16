@@ -1,6 +1,6 @@
-## FEN generation
+## Get
 
-get [type, color] from choosen algebraic square 
+get [type, color] from choosen algebraic square, example: `$chess->get('e4');`
 
 #### example:
 ```php
@@ -12,7 +12,7 @@ echo 'FEN => ' . $chess->generateFen() . PHP_EOL;
 var_dump($chess->get('e4'), $chess->get('e1'), $chess->get('d8'));
 ```
 will return
-```
+```text
 FEN => rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 NULL
 array(2) {
