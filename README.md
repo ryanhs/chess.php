@@ -22,7 +22,6 @@ $chess = new Chess();
 while (!$chess->gameOver()) {
 	$moves = $chess->moves();
 	$move = $moves[mt_rand(0, count($moves) - 1)];
-	
 	$chess->move($move);
 }
 

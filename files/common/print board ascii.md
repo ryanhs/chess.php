@@ -1,4 +1,4 @@
-## print board
+## Print Board (ASCII)
 
 chess.php like chess.js has built in debuging tools for print board in ascii format
 its really simple, just use ascii() method.
