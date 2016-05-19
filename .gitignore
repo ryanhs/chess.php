@@ -3,3 +3,6 @@ chess.js/
 
 vendor/
 composer.lock
+
+
+*.tmp

@@ -77,4 +77,115 @@ class PgnTest extends \PHPUnit_Framework_TestCase
 		$this->assertContains('1. ... e5', $pgn);
 		$this->assertContains('2. Nf3 Nc6', $pgn);
 	}
+	
+	
+	public function testParsePgn()
+	{		
+		$chess = new ChessPublicator();
+		
+		$parsed = Chess::parsePgn('1.e4 e5 2.Nf3');
+		$this->assertContains('e4', $parsed['moves']);
+		$this->assertContains('e5', $parsed['moves']);
+		$this->assertContains('Nf3', $parsed['moves']);
+		
+		
+		$parsed = Chess::parsePgn(<<<EOD
+[Event "Earl tourn"]
+[Site "?"]
+1.e4 e5 2.Nf3
+EOD
+		);
+		$this->assertArraySubset(['Event' => 'Earl tourn'], $parsed['header']);
+		$this->assertArraySubset(['Site' => '?'], $parsed['header']);
+		$this->assertContains('e4', $parsed['moves']);
+		$this->assertContains('e5', $parsed['moves']);
+		$this->assertContains('Nf3', $parsed['moves']);
+	}
+	
+	/**
+	 * @depends testParsePgn
+	 */
+	public function testValidatePgn()
+	{		
+		$chess = new ChessPublicator();
+		
+		
+		$parsed = Chess::validatePgn('1.e4 e5some failed string 2.Nf3');
+		$this->assertFalse($parsed);
+		
+		
+		$parsed = $chess->validatePgn(<<<EOD
+[Event "Earl tourn"]
+[Site "?"]
+1.e4 e5 2.Nf3 oke failed
+EOD
+);
+		$this->assertFalse($parsed);
+		
+		
+		$parsed = Chess::validatePgn(<<<EOD
+[Event "Earl tourn"]
+oke failed here
+[Site "?"]
+1.e4 e5 2.Nf3
+EOD
+);
+		$this->assertFalse($parsed);
+		
+		
+		$parsed = Chess::validatePgn(<<<EOD
+[Event "Earl tourn"]
+[Site "?"]
+1.e4 e5 2.Nf3 1-0
+EOD
+);
+		$this->assertTrue($parsed);
+		
+		$parsed = Chess::validatePgn(<<<EOD
+[Event "Earl tourn"]
+[Site "?"]
+1.e4 e5 2.Nf3 1/2-1/2
+EOD
+);
+		$this->assertTrue($parsed);
+		
+		
+		$parsed = Chess::validatePgn('1.e4 e5 2.Nf3', [ 'verbose' => true ]);
+		$this->assertContains('e4', $parsed['moves']);
+		$this->assertContains('e5', $parsed['moves']);
+		$this->assertContains('Nf3', $parsed['moves']);
+		$this->assertSame($parsed['game']->fen(), 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2');
+				
+		
+		$parsed = Chess::validatePgn(<<<EOD
+[Event "Earl tourn"]
+[Site "?"]
+1.e4 e5 2.Nf3
+EOD
+		, [ 'verbose' => true ]);
+		$this->assertArraySubset(['Event' => 'Earl tourn'], $parsed['header']);
+		$this->assertArraySubset(['Site' => '?'], $parsed['header']);
+		$this->assertContains('e4', $parsed['moves']);
+		$this->assertContains('e5', $parsed['moves']);
+		$this->assertContains('Nf3', $parsed['moves']);
+		$this->assertSame($parsed['game']->fen(), 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2');
+	}
+	
+	/**
+	 * @depends testParsePgn
+	 * @depends testValidatePgn
+	 */
+	public function testLoadPgn()
+	{		
+		$chess = new ChessPublicator();
+		
+		$return = $chess->loadPgn('1.e4 e5 2.Nf3');
+		$this->assertSame($chess->fen(), 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2');
+		
+		$return = $chess->loadPgn('1.e4 e5 2.e4');
+		$this->assertFalse($return);
+		
+		$return = $chess->loadPgn('1.e4 e5 make it invalid 2.Nf3');
+		$this->assertFalse($return);
+	}
 }

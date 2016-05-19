@@ -403,6 +403,111 @@ class Chess
 		return $o;
 	}
 	
+	public static function parsePgn($pgn)
+	{
+		$header = [];
+		$moves = [];
+		
+		// separate lines
+		$lines = str_replace("\r", "\n", $pgn);
+		while (strpos($lines, "\n\n") !== FALSE) $lines = str_replace("\n\n", "\n", $lines);
+		$lines = explode("\n", $lines);
+		
+		$parseHeader = true;
+		foreach ($lines as $line) {
+			
+			// parse header
+			if ($parseHeader) {
+				preg_match('/^\[(\S+) \"(.*)\"\]$/', $line, $matches);
+				if (count($matches) >= 3) {
+					$header[$matches[1]] = $matches[2];
+					continue;
+				}
+			}
+			$parseHeader = false;
+			
+			// parse movements
+			$movesTmp = explode(' ', $line);
+			foreach ($movesTmp as $moveTmp) {
+				$moveTmp = trim($moveTmp);
+				$moveTmp = preg_replace("/^(\d+)\.\s?/", "", $moveTmp);
+				
+				if(!in_array($moveTmp, ['', '*', '1-0', '1/2-1/2', '0-1']))
+					$moves[] = $moveTmp;
+			}	
+		}
+		
+		return compact('header', 'moves');
+	}
+	
+	/* return TRUE or FALSE
+	 * but, if ($options['verbose'] == true), return compact('header', 'moves', 'game') or FALSE
+	 */
+	public static function validatePgn($pgn, $options = [])
+	{
+		$parsedPgn = self::parsePgn($pgn);
+		$verbose = !empty($options['verbose']) ? $options['verbose'] : false;
+		
+		$chess = new self;
+		// validate move first before header for quick check invalid move
+		foreach ($parsedPgn['moves'] as $k => $v) {
+			if($chess->move($v) === null) return false; // quick get out if move invalid
+		}
+		foreach ($parsedPgn['header'] as $k => $v) {
+			$chess->header($k, $v);
+		}
+		$parsedPgn['game'] = $chess;
+		
+		return $verbose ? $parsedPgn : true;
+	}
+	
+	public function export()
+	{
+		return (object) [
+			'board' => $this->board,
+			'kings' => $this->kings,
+			'turn' => $this->turn,
+			'castling' => $this->castling,
+			'epSquare' => $this->epSquare,
+			'halfMoves' => $this->halfMoves,
+			'moveNumber' => $this->moveNumber,
+			'history' => $this->history,
+			'header' => $this->header,
+		];
+	}
+	
+	public function import($chess)
+	{
+		if (is_a($chess, __CLASS__))
+			$chess = $chess->export();
+		
+		if (!is_object($chess)) return false;
+		
+		$this->board		= $chess->board;
+		$this->kings		= $chess->kings;
+		$this->turn 		= $chess->turn;
+		$this->castling		= $chess->castling;
+		$this->epSquare		= $chess->epSquare;
+		$this->halfMoves	= $chess->halfMoves;
+		$this->moveNumber	= $chess->moveNumber;
+		$this->history		= $chess->history;
+		$this->header		= $chess->header;
+		
+		return true;
+	}
+	
+	/* this function is not really port from chess.js
+	 * its just because i want to make a new logic, but interface almost the same
+	 */
+	public function loadPgn($pgn)
+	{
+		$parsedPgn = self::validatePgn($pgn, [ 'verbose' => true ]);
+		if ($parsedPgn === false) return false;
+		
+		$this->import($parsedPgn['game']);
+		return $this;
+	}
+	
 	public function history($options = [])
 	{
 		$moveHistory = [];
