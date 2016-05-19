@@ -641,7 +641,7 @@ class Chess
 		if ($board[$to] !== null) {
 			$move['captured'] = $board[$to]['type'];
 		} else if ($flags & self::BITS['EP_CAPTURE']) {
-			$move['capture'] = self::PAWN;
+			$move['captured'] = self::PAWN;
 		}
 		
 		return $move;
@@ -1389,5 +1389,44 @@ class Chess
 		$s .= '   +------------------------+' . PHP_EOL;
 		$s .= '     a  b  c  d  e  f  g  h' . PHP_EOL;
 		return $s;
+	}
+	
+	// really need to think about full perft test
+	public function perft($depth, $full = false)
+	{
+		$nodes = 0;
+		$captures = 0;
+		$enPassants = 0;
+		$castles = 0;
+		$promotions = 0;
+		$checks = 0;
+		$checkmates = 0;
+		
+		$moves = $this->generateMoves([ 'legal' => false ]);
+		$color = $this->turn();
+		for ($i = 0, $len = count($moves); $i < $len; $i++) {
+			$this->makeMove($moves[$i]);
+			
+			if (!$this->kingAttacked($color)) {
+				if ($depth - 1 > 0) {
+					$childs		= $this->perft($depth - 1, true);
+					$nodes		+= $childs['nodes'];
+					$captures	+= $childs['captures'];
+					$enPassants	+= $childs['enPassants'];
+					$castles	+= $childs['castles'];
+					$promotions	+= $childs['promotions'];
+					$checks		+= $childs['checks'];
+					$checkmates	+= $childs['checkmates'];
+				} else {
+					$nodes++;
+				}
+			}
+			$this->undoMove();
+		}
+		
+		if ($full === false)
+			return $nodes;
+		else
+			return compact('nodes', 'captures', 'enPassants', 'castles', 'promotions', 'checks', 'checkmates');
 	}
 }
