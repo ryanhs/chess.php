@@ -358,24 +358,73 @@ class Chess
 		return ['valid' => true, 'error_number' => 0, 'error' => 'No errors.'];
 	}
 	
-	public function history($options = []) {
+	/* using the specification from http://www.chessclub.com/help/PGN-spec
+	 * example for html usage: $chess->pgn({ 'max_width' => 72, 'newline_char' => "<br />" ]);
+	 * 
+	 * this is a custom implementation, not really a port from chess.js
+	 */
+	public function pgn($options = [])
+	{
+		$newline = !empty($options['newline_char']) ? $options['newline_char'] : "\n";
+		$maxWidth = !empty($options['max_width']) ? $options['max_width'] : 0;
+		
+		// process header
+		$o = '';
+		foreach ($this->header as $k => $v) {
+			$v = addslashes($v);
+			$o .= "[{$k} \"{$v}\"]" . $newline;
+		}
+		
+		if (strlen($o) > 0) $o .= $newline; // if header presented, add new empty line
+		
+		// process movements
+		$currentWidth = 0;
+		$i = 1;
+		foreach ($this->history([ 'verbose' => true ]) as $history) {
+			if($i === 1 && $history['turn'] === self::BLACK) {
+				$tmp = $i . '. ... ';
+				$i++;
+			} else {
+				$tmp = ($i % 2 === 1 ? ceil($i / 2) . '. ' : '');
+			}
+			$tmp .= $history['san'] . ' ';
+			
+			$currentWidth += strlen($tmp);
+			if ($currentWidth > $maxWidth && $maxWidth > 0) {
+				$tmp = $newline . $tmp;
+				$currentWidth = 0;
+			}
+			
+			$o .= $tmp;
+			$i++;
+		}
+		if ($i > 1) $o = substr($o, 0, -1); // remove last space
+		
+		return $o;
+	}
+	
+	public function history($options = [])
+	{
 		$moveHistory = [];
-		$gameTmp = new self();
+		$gameTmp = !empty($this->header['SetUp']) ? new self($this->header['FEN']) : new self();
 		$moveTmp = [];
 		$verbose = !empty($options['verbose']) ? $options['verbose'] : false;
 		
-		foreach ($this->history as $history) {			
+		foreach ($this->history as $history) {		
 			$moveTmp['to'] = self::algebraic($history['move']['to']);
 			$moveTmp['from'] = self::algebraic($history['move']['from']);
 			if ($history['move']['flags'] & self::BITS['PROMOTION']) {
 				$moveTmp['promotion'] = $history['move']['promotion'];
 			}
 			
-			if ($verbose)
-				$moveHistory[] = $gameTmp->move($moveTmp);
-			else
-				$moveHistory[] = $gameTmp->move($moveTmp)['san'];
-				
+			$turn = $gameTmp->turn();
+			$moveTmp = $gameTmp->move($moveTmp);
+			
+			if ($verbose) {
+				$moveHistory[] = array_merge(['turn' => $turn], $moveTmp);
+			} else {
+				$moveHistory[] = $moveTmp['san'];
+			}
 			$moveTmp = [];
 		}
 		
