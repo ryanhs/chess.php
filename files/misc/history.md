@@ -12,7 +12,8 @@ $chess->reset();
 $match = '1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7 6. Bxf6
 		gxf6 7. g3 f5 8. Nc3 Bf6';
 $moves = preg_replace("/([0-9]{0,})\./", "", $match);
-$moves = str_replace('  ', ' ', str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", '', $moves))));
+$moves = str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", '', $moves)));
+while (strpos($moves, '  ') !== FALSE) $moves = str_replace('  ', ' ', $moves);
 $moves = explode(' ', trim($moves));
 foreach ($moves as $move) if($chess->move($move) === null) var_dump($move);
 
@@ -35,13 +36,9 @@ example:
 use \Ryanhs\Chess\Chess;
 
 $chess->reset();
-$match = '1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7 6. Bxf6
-		gxf6 7. g3 f5 8. Nc3 Bf6';
-$moves = preg_replace("/([0-9]{0,})\./", "", $match);
-$moves = str_replace('  ', ' ', str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", '', $moves))));
-$moves = explode(' ', trim($moves));
-foreach ($moves as $move) if($chess->move($move) === null) var_dump($move);
-
+.
+.
+.
 print_r($chess->history([ 'verbose' => true ])) . PHP_EOL;
 ```
 return:
@@ -50,6 +47,7 @@ Array
 (
     [0] => Array
         (
+            [turn] => w
             [color] => w
             [from] => e2
             [to] => e4
@@ -58,35 +56,12 @@ Array
             [promotion] => 
             [san] => e4
         )
-
-    [1] => Array
-        (
-            [color] => b
-            [from] => e7
-            [to] => e6
-            [flags] => n
-            [piece] => p
-            [promotion] => 
-            [san] => e6
-        )
-
-    [2] => Array
-        (
-            [color] => w
-            [from] => d2
-            [to] => d4
-            [flags] => b
-            [piece] => p
-            [promotion] => 
-            [san] => d4
-        )
-	
-	.
-	.
-	.
-	
+    .
+    .
+    .
     [15] => Array
         (
+            [turn] => b
             [color] => b
             [from] => e7
             [to] => f6
@@ -95,5 +70,6 @@ Array
             [promotion] => 
             [san] => Bf6
         )
+
 )
 ```
