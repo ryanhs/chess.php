@@ -138,6 +138,7 @@ class Chess
 	protected $moveNumber;
 	protected $history;
 	protected $header;
+	protected $generateMovesCache;
 	
 	public function __construct($fen = null)
 	{
@@ -158,6 +159,7 @@ class Chess
 		$this->moveNumber	= 1;
 		$this->history		= [];
 		$this->header		= [];
+		$this->generateMovesCache = [];
 		
 		for($i = 0; $i < 120; $i++) $this->board[$i] = null;
 	}
@@ -483,6 +485,7 @@ class Chess
 		
 		if (!is_object($chess)) return false;
 		
+		$this->clear(); // clear first
 		$this->board		= $chess->board;
 		$this->kings		= $chess->kings;
 		$this->turn 		= $chess->turn;
@@ -834,6 +837,13 @@ class Chess
 	
 	protected function generateMoves($options = [])
 	{
+		$cacheKey = $this->fen() . json_encode($options);
+		
+		// check cache first
+		if (isset($this->generateMovesCache[$cacheKey])) {
+			return $this->generateMovesCache[$cacheKey];
+		}
+		
 		$moves = [];
 		$us = $this->turn();
 		$them = self::swap_color($us);
@@ -961,6 +971,7 @@ class Chess
 		
 		// return all pseudo-legal moves (this includes moves that allow the king to be captured)
 		if (!$legal) {
+			$this->generateMovesCache[$cacheKey] = $moves;
 			return $moves;
 		}
 		
@@ -971,6 +982,8 @@ class Chess
 			if(!$this->kingAttacked($us)) $legalMoves[] = $move;
 			$this->undoMove();
 		}
+		
+		$this->generateMovesCache[$cacheKey] = $legalMoves;
 		return $legalMoves;
 	}
 	
