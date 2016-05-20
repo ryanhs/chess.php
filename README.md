@@ -8,11 +8,11 @@ NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php
 
 ## Installation
 
-use composer with `composer require ryanhs/chess`   
+use composer with `composer require ryanhs/chess.php`   
 or put in your composer.json  
 ```
 "require": {
-	"ryanhs/chess": "1.0.*"
+	"ryanhs/chess.php": "^1.0"
 }
 ```
   
