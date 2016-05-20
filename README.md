@@ -32,6 +32,8 @@ The code below plays a complete game of chess ... randomly.
 
 ```php
 <?php
+
+require 'vendor/autoload.php';
 use \Ryanhs\Chess\Chess;
 
 $chess = new Chess();
