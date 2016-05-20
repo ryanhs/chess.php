@@ -44,3 +44,8 @@ you can check it here: [https://ryanhs.github.io/chess.php](https://ryanhs.githu
 ## TODO
 
 - 
+
+## BACKGROUND
+
+actually i made this, when i need to use some validation in my chess game (college project) haha..  
+main purpose is for validation, we not try to make an engine in PHP :-)
