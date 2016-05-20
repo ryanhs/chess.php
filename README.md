@@ -6,6 +6,21 @@ detection - basically everything but the AI.
 
 NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php
 
+## Installation
+
+use composer with `composer require ryanhs/chess`   
+or put in your composer.json  
+```
+"require": {
+	"ryanhs/chess": "1.0.*"
+}
+```
+  
+  
+if you doesn't know composer, its a really usefull tools in php for package management,   
+try to learn composer [here](https://getcomposer.org/doc/00-intro.md)
+
+
 ## Coding Style
 about coding style, naming system.. 
 because this is a PHP, i try to stick to use PHP-PSR, like game_over() become gameOver()  
