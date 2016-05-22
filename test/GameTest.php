@@ -13,7 +13,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
 		$i = 0;
 		while (!$chess->gameOver()) {
 			$i++;
-			if ($i > 100) break;
+			if ($i > 50) break;
 			
 			$moves = $chess->moves();
 			$moveRandom = $moves[mt_rand(0, count($moves) - 1)];

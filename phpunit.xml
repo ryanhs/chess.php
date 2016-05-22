@@ -7,12 +7,16 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="true"
-         syntaxCheck="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
 >
     <testsuites>
         <testsuite name="Application Test Suite">
             <directory>./test/</directory>
         </testsuite>
     </testsuites>
+    
+	<listeners>
+		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+	</listeners>
 </phpunit>
