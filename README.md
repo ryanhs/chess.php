@@ -4,7 +4,9 @@ chess.php is a PHP chess library that is used for chess move
 generation/validation, piece placement/movement, and check/checkmate/stalemate
 detection - basically everything but the AI. 
 
-NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php
+NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php  
+
+[![Build Status](https://travis-ci.org/ryanhs/chess.php.svg?branch=master)](https://travis-ci.org/ryanhs/chess.php)  
 
 ## Installation
 
