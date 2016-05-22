@@ -1016,7 +1016,7 @@ class Chess
 				if (
 					$sanOrArray['from'] === self::algebraic($move['from']) &&
 					$sanOrArray['to'] === self::algebraic($move['to']) &&
-					$sanOrArray['promotion'] === $move['promotion']
+					($move['promotion'] == null || $sanOrArray['promotion'] == $move['promotion'])
 				) {
 					$moveArray = $move;
 					break;
