@@ -906,7 +906,7 @@ class Chess
 						if ($this->board[$square]['color'] === $them) {
 							$addMove($us, $this->board, $moves, $i, $square, self::BITS['CAPTURE']);
 						}
-					} else if ($square == $this->epSquare) { // get epSquare from enemy
+					} else if ($square === $this->epSquare) { // get epSquare from enemy
 						$addMove($us, $this->board, $moves, $i, $this->epSquare, self::BITS['EP_CAPTURE']);
 					}
 				}

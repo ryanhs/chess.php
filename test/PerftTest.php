@@ -62,4 +62,10 @@ class PerftTest extends \PHPUnit_Framework_TestCase
 		//~ $this->assertSame($chess->perft(3), 89890);
 	}
 	
+	// Tests that square '0' cannot be confused for the EP square when EP square is null
+    public function test7()
+    {
+	   $chess = new ChessPublicator('8/RPP5/8/3k4/5Bp1/6Pp/P4P1P/5K2 w - - 1 42');
+	   $this->assertSame($chess->perft(1), 26);
+	}
 }
