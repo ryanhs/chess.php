@@ -7,7 +7,7 @@ require __DIR__.'/../vendor/autoload.php';
 use \Ryanhs\Chess\Chess;
 
 // source: https://chessprogramming.wikispaces.com/Perft+Results
-class PerftTest extends \PHPUnit_Framework_TestCase
+class PerftTest extends \PHPUnit\Framework\TestCase
 {
     // Position 1 Initial Position
     public function test1()

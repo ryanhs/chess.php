@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
 
-class MiscTest extends \PHPUnit_Framework_TestCase
+class MiscTest extends \PHPUnit\Framework\TestCase
 {
     public function testSquareColor()
     {

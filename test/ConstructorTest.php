@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
 
-class ConstructorTest extends \PHPUnit_Framework_TestCase
+class ConstructorTest extends \PHPUnit\Framework\TestCase
 {
     public function testDefaultPosition()
     {

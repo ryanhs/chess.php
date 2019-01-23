@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
 
-class MoveTest extends \PHPUnit_Framework_TestCase
+class MoveTest extends \PHPUnit\Framework\TestCase
 {
     public function testBuildMove()
     {

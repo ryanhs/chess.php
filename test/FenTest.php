@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
 
-class FenTest extends \PHPUnit_Framework_TestCase
+class FenTest extends \PHPUnit\Framework\TestCase
 {
     public function testClear()
     {

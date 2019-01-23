@@ -1289,7 +1289,7 @@ class Chess
         $hash = [];
         foreach ($this->history as $history) {
             if (isset($hash[$history['position']])) {
-                $hash[$history['position']]++;
+                ++$hash[$history['position']];
             } else {
                 $hash[$history['position']] = 1;
             }
@@ -1380,10 +1380,10 @@ class Chess
             ) {
                 ++$ambiguities;
                 if (self::rank($from) === self::rank($ambiguityFrom)) {
-                    $sameRank++;
+                    ++$sameRank;
                 }
                 if (self::file($from) === self::file($ambiguityFrom)) {
-                    $sameFile++;
+                    ++$sameFile;
                 }
             }
         }

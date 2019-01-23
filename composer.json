@@ -14,8 +14,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
-        "johnkary/phpunit-speedtrap": "^1.0",
-        "phpunit/phpunit": "^5.3"
+        "johnkary/phpunit-speedtrap": "^3.0",
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +24,8 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "fix-cs": "./vendor/bin/php-cs-fixer fix",
+        "check-cs": "./vendor/bin/php-cs-fixer fix --dry-run"
     }
 }

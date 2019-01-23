@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
 
-class AttackTest extends \PHPUnit_Framework_TestCase
+class AttackTest extends \PHPUnit\Framework\TestCase
 {
     public function testAttackedPawn()
     {
