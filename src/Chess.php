@@ -7,9 +7,6 @@ class Chess
 	const BLACK = 'b';
 	const WHITE = 'w';
 
-	// here we use NULL, instead of self::EMPTY
-	//~ const EMPTY = -1;
-
 	const PAWN = 'p';
 	const KNIGHT = 'n';
 	const BISHOP = 'b';
