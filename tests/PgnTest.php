@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class PgnTest extends \PHPUnit\Framework\TestCase
+class PgnTest extends TestCase
 {
-    public function testClear()
+    public function testClear(): void
     {
         // with clear
         $chess = new ChessPublicator();
@@ -20,24 +21,21 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->pgn(), '');
     }
     
-    public function testNormal()
+    public function testNormal(): void
     {
         $chess = new ChessPublicator();
         $chess->header('White', 'John');
         $chess->header('Black', 'Cena');
 
-        // import some game
         $match = '1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7 6. Bxf6
 				gxf6 7. g3 f5 8. Nc3 Bf6';
         $moves = preg_replace("/([0-9]{0,})\./", '', $match);
         $moves = str_replace('  ', ' ', str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", '', $moves))));
         $moves = explode(' ', trim($moves));
         foreach ($moves as $move) {
-            if ($chess->move($move) === null) {
-                var_dump($move);
-            }
+            $chess->move($move);
         }
-        
+
         $fen = $chess->fen();
         $chess->header('FEN', $fen);
         $pgn = $chess->pgn();
@@ -60,7 +58,7 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('8. Nc3 Bf6', $pgn);
     }
     
-    public function testBlackFirst()
+    public function testBlackFirst(): void
     {
         $chess = new ChessPublicator();
         $chess->move('e4');
@@ -84,7 +82,7 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('2. Nf3 Nc6', $pgn);
     }
     
-    public function testParsePgn()
+    public function testParsePgn(): void
     {
         $chess = new ChessPublicator();
         
@@ -111,7 +109,7 @@ EOD
     /**
      * @depends testParsePgn
      */
-    public function testValidatePgn()
+    public function testValidatePgn(): void
     {
         $chess = new ChessPublicator();
         
@@ -185,7 +183,7 @@ EOD
      * @depends testParsePgn
      * @depends testValidatePgn
      */
-    public function testLoadPgn()
+    public function testLoadPgn(): void
     {
         $chess = new ChessPublicator();
         

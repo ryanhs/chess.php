@@ -150,7 +150,7 @@ class Chess
         }
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->board = [];
         $this->kings = [self::WHITE => null, self::BLACK => null];
@@ -168,7 +168,7 @@ class Chess
         }
     }
 
-    protected function updateSetup($fen)
+    protected function updateSetup($fen): void
     {
         if (count($this->history) > 0) {
             return;
@@ -714,7 +714,7 @@ class Chess
         return $move;
     }
 
-    protected function makeMove($move)
+    protected function makeMove($move): void
     {
         $us = $this->turn();
         $them = self::swap_color($us);
@@ -888,14 +888,15 @@ class Chess
         }
 
         // if castling
-        if ($move['flags'] & (self::BITS['KSIDE_CASTLE'] | self::BITS['QSIDE_CASTLE'])) {
-            if ($move['flags'] & self::BITS['KSIDE_CASTLE']) {
-                $castlingTo = $move['to'] + 1;
-                $castlingFrom = $move['to'] - 1;
-            } elseif ($move['flags'] & self::BITS['QSIDE_CASTLE']) {
-                $castlingTo = $move['to'] - 2;
-                $castlingFrom = $move['to'] + 1;
-            }
+        if ($move['flags'] & self::BITS['KSIDE_CASTLE']) {
+            $castlingTo = $move['to'] + 1;
+            $castlingFrom = $move['to'] - 1;
+            $this->board[$castlingTo] = $this->board[$castlingFrom];
+            $this->board[$castlingFrom] = null;
+        }
+        if ($move['flags'] & self::BITS['QSIDE_CASTLE']) {
+            $castlingTo = $move['to'] - 2;
+            $castlingFrom = $move['to'] + 1;
             $this->board[$castlingTo] = $this->board[$castlingFrom];
             $this->board[$castlingFrom] = null;
         }
@@ -939,7 +940,7 @@ class Chess
 
         // using anonymous function here, is it a bad practice?
         // its because we stick to use "self::", if its not anonymous, then it have to be "Chess::"
-        $addMove = function ($turn, $board, &$moves, $from, $to, $flags) {
+        $addMove = function ($turn, $board, &$moves, $from, $to, $flags): void {
             // if pawn promotion
             if (
                 $board[$from]['type'] === self::PAWN &&
@@ -1134,7 +1135,7 @@ class Chess
     public function moves($options = ['verbose' => false])
     {
         $moves = $this->generateMoves();
-        array_walk($moves, function (&$move) use ($options) {
+        array_walk($moves, function (&$move) use ($options): void {
             $move = !empty($options['verbose']) ? $this->makePretty($move) : $this->moveToSAN($move);
         });
 

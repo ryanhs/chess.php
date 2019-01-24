@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="./test/bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
 >
     <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./test/</directory>
+        <testsuite name="Chess.php Test Suite">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     

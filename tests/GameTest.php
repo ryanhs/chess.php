@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class GameTest extends \PHPUnit\Framework\TestCase
+class GameTest extends TestCase
 {
-    public function testRandomMove()
+    public function testRandomMove(): void
     {
         $chess = new Chess;
         
@@ -18,13 +19,9 @@ class GameTest extends \PHPUnit\Framework\TestCase
             if ($i > 50) {
                 break;
             }
-            
+
             $moves = $chess->moves();
             $moveRandom = $moves[mt_rand(0, count($moves) - 1)];
-            
-            //~ echo $i % 2 == 1 ? (($i + 1) / 2) . '.' : '';
-            //~ echo $moveRandom;
-            //~ echo $i % 2 == 1 ? ' ' : ((($i + 1) / 2) % 6 == 0 ? PHP_EOL : ' ');
             
             $move = $chess->move($moveRandom);
             $this->assertNotNull($move);

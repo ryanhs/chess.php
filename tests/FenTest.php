@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class FenTest extends \PHPUnit\Framework\TestCase
+class FenTest extends TestCase
 {
-    public function testClear()
+    public function testClear(): void
     {
         $chess = new Chess();
         $chess->clear();
         $this->assertSame($chess->fen(), '8/8/8/8/8/8/8/8 w - - 0 1');
     }
     
-    public function testLoad()
+    public function testLoad(): void
     {
         $positions = [
             // original from chess.js test
@@ -41,7 +42,7 @@ class FenTest extends \PHPUnit\Framework\TestCase
         }
     }
     
-    public function testValidate()
+    public function testValidate(): void
     {
         $positions = [
             // 1st criterion: 6 space-separated fields
@@ -239,7 +240,7 @@ class FenTest extends \PHPUnit\Framework\TestCase
         }
     }
     
-    public function testGeneration()
+    public function testGeneration(): void
     {
         $positions = [
             ['fen' => Chess::DEFAULT_POSITION, 'error_number' => 0, 'should_pass' => true],

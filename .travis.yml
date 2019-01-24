@@ -9,8 +9,7 @@ before_script:
   - composer install --prefer-source --no-interaction --dev
 
 script:
-  - composer check-cs
-  - composer test
+  - composer build
 
 notifications:
   on_success: never

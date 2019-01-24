@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use Ryanhs\Chess\Chess;
 
 // a proxy for testing protected method
 class ChessPublicator extends Chess
@@ -39,9 +39,9 @@ class ChessPublicator extends Chess
         return self::buildMove($turn, $board, $from, $to, $flags, $promotion);
     }
     
-    public function makeMovePublic($move)
+    public function makeMovePublic($move): void
     {
-        return $this->makeMove($move);
+        $this->makeMove($move);
     }
     
     public function undoMovePublic()

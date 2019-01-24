@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class PiecePlacementTest extends \PHPUnit\Framework\TestCase
+class PiecePlacementTest extends TestCase
 {
-    public function testAll()
+    public function testAll(): void
     {
         $chess = new Chess('8/8/8/8/8/8/8/8 w KQkq - 0 1');
         

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class MoveTest extends \PHPUnit\Framework\TestCase
+class MoveTest extends TestCase
 {
-    public function testBuildMove()
+    public function testBuildMove(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -34,7 +35,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testBuildMove
      */
-    public function testMakeMoveAndCheckHistory()
+    public function testMakeMoveAndCheckHistory(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -75,7 +76,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->fen(), 'Q7/8/8/8/8/8/8/K6k b - - 0 1');
     }
     
-    public function testUndoMoveAndCheckHistory()
+    public function testUndoMoveAndCheckHistory(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -201,7 +202,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->fen(), $fenStart);
     }
     
-    public function testMoveToSAN()
+    public function testMoveToSAN(): void
     {
         $chess = new ChessPublicator();
     
@@ -392,7 +393,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // generate moves test
         $chess->load('8/ppp2P2/pkp5/ppp5/5PPP/5PKP/5PPP/8 w - - 0 1');
         $moves = $chess->generateMovesPublic();
-        array_walk($moves, function (&$move) use ($chess) {
+        array_walk($moves, function (&$move) use ($chess): void {
             $move = $chess->moveToSANPublic($move);
         });
         $this->assertContains('f8=Q', $moves);
@@ -404,7 +405,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('h5', $moves);
     }
     
-    public function testMoveFromSAN()
+    public function testMoveFromSAN(): void
     {
         $chess = new ChessPublicator();
         $chess->reset();
@@ -445,7 +446,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->moveToSANPublic($chess->moveFromSANPublic('e4=Q')), 'e4');
     }
     
-    public function testSANMove()
+    public function testSANMove(): void
     {
         // Ruy Lopez (C70)
         $chess = new ChessPublicator();
@@ -460,7 +461,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->fen(), 'r1bqk1nr/1ppp1ppp/p1n5/2b1p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5');
     }
     
-    public function testArrayMove()
+    public function testArrayMove(): void
     {
         // Ruy Lopez (C70)
         $chess = new ChessPublicator();
@@ -475,7 +476,7 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->fen(), 'r1bqk1nr/1ppp1ppp/p1n5/2b1p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5');
     }
     
-    public function testSANMoveFromRealGame()
+    public function testSANMoveFromRealGame(): void
     {
         $chess = new ChessPublicator();
         

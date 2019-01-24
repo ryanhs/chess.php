@@ -21,12 +21,17 @@ return PhpCsFixer\Config::create()
         'pre_increment' => true,
         'single_quote' => true,
         'trim_array_spaces' => true,
-        'single_blank_line_before_namespace' => true
+        'single_blank_line_before_namespace' => true,
+        'fully_qualified_strict_types' => true,
+        'ordered_imports' => true,
+        'php_unit_fqcn_annotation' => true,
+        'return_type_declaration' => true,
+        'void_return' => true
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__ . '/src')
-            ->in(__DIR__ . '/test')
+            ->in(__DIR__ . '/tests')
     )
     ->setRiskyAllowed(true)
     ->setUsingCache(false)

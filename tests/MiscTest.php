@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class MiscTest extends \PHPUnit\Framework\TestCase
+class MiscTest extends TestCase
 {
-    public function testSquareColor()
+    public function testSquareColor(): void
     {
         $chess = new Chess;
         $this->assertSame($chess->squareColor('a1'), 'dark');
@@ -19,7 +20,7 @@ class MiscTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->squareColor('aw'), null);
     }
     
-    public function testHistorySAN()
+    public function testHistorySAN(): void
     {
         $chess = new ChessPublicator();
         $moves = ['e4','e6','d4','d5','Nc3','Nf6','Bg5','dxe4','Nxe4','Be7','Bxf6','gxf6','g3','f5','Nc3','Bf6'];
@@ -30,7 +31,7 @@ class MiscTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->history(), $moves);
     }
     
-    public function testHistoryPrettyMoves()
+    public function testHistoryPrettyMoves(): void
     {
         $chess = new ChessPublicator();
         $moves = ['e4','e6','d4','d5','Nc3','Nf6','Bg5','dxe4','Nxe4','Be7','Bxf6','gxf6','g3','f5','Nc3','Bf6'];

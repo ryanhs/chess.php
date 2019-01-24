@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class AttackTest extends \PHPUnit\Framework\TestCase
+class AttackTest extends TestCase
 {
-    public function testAttackedPawn()
+    public function testAttackedPawn(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -26,7 +27,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f5']), true);
     }
     
-    public function testAttackedKnight()
+    public function testAttackedKnight(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -51,7 +52,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f8']), false);
     }
     
-    public function testAttackedBishop()
+    public function testAttackedBishop(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -67,7 +68,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f4']), false);
     }
     
-    public function testAttackedRook()
+    public function testAttackedRook(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -85,7 +86,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f4']), true);
     }
     
-    public function testAttackedQueen()
+    public function testAttackedQueen(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -101,7 +102,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f5']), true);
     }
     
-    public function testAttackedKing()
+    public function testAttackedKing(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -117,7 +118,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->attackedPublic(Chess::WHITE, Chess::SQUARES['f5']), true);
     }
     
-    public function testInCheck()
+    public function testInCheck(): void
     {
         $chess = new ChessPublicator();
         $chess->clear();
@@ -131,7 +132,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->inCheck(), false);
     }
     
-    public function testInCheckmate()
+    public function testInCheckmate(): void
     {
         $chess = new ChessPublicator();
         $this->assertSame($chess->inCheckmate(), false);
@@ -140,7 +141,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->inCheckmate(), true);
     }
     
-    public function testInStalemate()
+    public function testInStalemate(): void
     {
         $chess = new ChessPublicator();
         $this->assertSame($chess->inStalemate(), false);
@@ -151,7 +152,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->inStalemate(), true);
     }
     
-    public function testInsufficientMaterial()
+    public function testInsufficientMaterial(): void
     {
         $chess = new ChessPublicator();
         $this->assertSame($chess->insufficientMaterial(), false);
@@ -190,7 +191,7 @@ class AttackTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($chess->insufficientMaterial(), true);
     }
     
-    public function testinThreefoldRepetition()
+    public function testinThreefoldRepetition(): void
     {
         $chess = new ChessPublicator();
         

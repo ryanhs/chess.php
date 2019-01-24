@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+namespace Ryanhs\Chess\Test;
 
-use \Ryanhs\Chess\Chess;
+use PHPUnit\Framework\TestCase;
+use Ryanhs\Chess\Chess;
 
-class ConstructorTest extends \PHPUnit\Framework\TestCase
+class ConstructorTest extends TestCase
 {
-    public function testDefaultPosition()
+    public function testDefaultPosition(): void
     {
         $a = new Chess;
         $b = new Chess;
@@ -19,7 +20,7 @@ class ConstructorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($a->ascii(), $b->ascii());
     }
     
-    public function testAsciiIsEchoString()
+    public function testAsciiIsEchoString(): void
     {
         $a = new Chess;
         $b = new Chess;

@@ -15,17 +15,29 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
         "johnkary/phpunit-speedtrap": "^3.0",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "phpstan/phpstan": "^0.11.1"
     },
     "autoload": {
         "psr-4": {
             "Ryanhs\\Chess\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Ryanhs\\Chess\\Test\\": "tests/"
+        }
+    },
     "minimum-stability": "stable",
     "scripts": {
         "test": "./vendor/bin/phpunit",
         "fix-cs": "./vendor/bin/php-cs-fixer fix",
-        "check-cs": "./vendor/bin/php-cs-fixer fix --dry-run"
+        "check-cs": "./vendor/bin/php-cs-fixer fix --dry-run",
+        "phpstan": "./vendor/bin/phpstan analyze src tests --level 3 --configuration phpstan.neon",
+        "build": [
+            "@check-cs",
+            "@phpstan",
+            "@test"
+        ]
     }
 }
