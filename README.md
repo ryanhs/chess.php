@@ -69,5 +69,5 @@ you can check it here: [https://ryanhs.github.io/chess.php](https://ryanhs.githu
 
 ## MAINTAINER/COLLABORATOR NEEDED
 
-As this project *not* in heavy development state, a maintainer/collaborator needed.
-If you interested to become Collaborator, please tell me. :-)
+As this project **not** in heavy development state, a maintainer/collaborator needed.  
+If you interested to become a collaborator, please tell me. :-)
