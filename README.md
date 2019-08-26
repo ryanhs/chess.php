@@ -8,7 +8,6 @@ NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php
 
 [![Latest Stable Version](https://poser.pugx.org/ryanhs/chess.php/v/stable)](https://packagist.org/packages/ryanhs/chess.php)
 [![Build Status](https://travis-ci.org/ryanhs/chess.php.svg?branch=master)](https://travis-ci.org/ryanhs/chess.php)
-[![PHP 5.6](http://php-eye.com/badge/symfony/symfony/php56.svg)](http://php.net/)
 [![MIT License](https://poser.pugx.org/ryanhs/chess.php/license)](https://packagist.org/packages/ryanhs/chess.php)  
 
 ## Installation
