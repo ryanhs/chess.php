@@ -2,7 +2,7 @@
 
 chess.php is a PHP chess library that is used for chess move
 generation/validation, piece placement/movement, and check/checkmate/stalemate
-detection - basically everything but the AI. 
+detection - basically everything but the AI.
 
 NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php  
 
@@ -20,14 +20,14 @@ or put in your composer.json
 	"ryanhs/chess.php": "^1.0"
 }
 ```
-  
-  
+
+
 if you doesn't know composer, its a really usefull tools in php for package management,   
 try to learn composer [here](https://getcomposer.org/doc/00-intro.md)
 
 
 ## Coding Style
-about coding style, naming system.. 
+about coding style, naming system..
 because this is a PHP, i try to stick to use PHP-PSR, like game_over() become gameOver()  
 
 just keep in mind, any function name transformed into camelCase
@@ -61,13 +61,13 @@ you can check it here: [https://ryanhs.github.io/chess.php](https://ryanhs.githu
 
 ## BUGS
 
-- 
+-
 
 ## TODO
 
-- 
+-
 
-## BACKGROUND
+## MAINTAINER/COLLABORATOR NEEDED
 
-actually i made this, when i need to use some validation in my chess game (college project) haha..  
-main purpose is for validation, we not try to make an engine in PHP :-)
+As this project *not* in heavy development state, a maintainer/collaborator needed.
+If you interested to become Collaborator, please tell me. :-)
