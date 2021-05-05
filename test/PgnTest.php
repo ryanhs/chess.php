@@ -76,12 +76,12 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         //~ echo $pgn;exit;
         
         // check setup ok
-        $this->assertContains('[SetUp "1"]', $pgn);
-        $this->assertContains('[FEN "'.$fen.'"]', $pgn);
+        $this->assertStringContainsString('[SetUp "1"]', $pgn);
+        $this->assertStringContainsString('[FEN "'.$fen.'"]', $pgn);
         
         // check movements
-        $this->assertContains('1. ... e5', $pgn);
-        $this->assertContains('2. Nf3 Nc6', $pgn);
+        $this->assertStringContainsString('1. ... e5', $pgn);
+        $this->assertStringContainsString('2. Nf3 Nc6', $pgn);
     }
     
     public function testParsePgn()
@@ -89,9 +89,9 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         $chess = new ChessPublicator();
         
         $parsed = Chess::parsePgn('1.e4 e5 2.Nf3');
-        $this->assertContains('e4', $parsed['moves']);
-        $this->assertContains('e5', $parsed['moves']);
-        $this->assertContains('Nf3', $parsed['moves']);
+        $this->assertStringContainsString('e4', $parsed['moves']);
+        $this->assertStringContainsString('e5', $parsed['moves']);
+        $this->assertStringContainsString('Nf3', $parsed['moves']);
         
         
         $parsed = Chess::parsePgn(
@@ -103,9 +103,9 @@ EOD
         );
         $this->assertArraySubset(['Event' => 'Earl tourn'], $parsed['header']);
         $this->assertArraySubset(['Site' => '?'], $parsed['header']);
-        $this->assertContains('e4', $parsed['moves']);
-        $this->assertContains('e5', $parsed['moves']);
-        $this->assertContains('Nf3', $parsed['moves']);
+        $this->assertStringContainsString('e4', $parsed['moves']);
+        $this->assertStringContainsString('e5', $parsed['moves']);
+        $this->assertStringContainsString('Nf3', $parsed['moves']);
     }
     
     /**
@@ -161,9 +161,9 @@ EOD
         
         
         $parsed = Chess::validatePgn('1.e4 e5 2.Nf3', ['verbose' => true]);
-        $this->assertContains('e4', $parsed['moves']);
-        $this->assertContains('e5', $parsed['moves']);
-        $this->assertContains('Nf3', $parsed['moves']);
+        $this->assertStringContainsString('e4', $parsed['moves']);
+        $this->assertStringContainsString('e5', $parsed['moves']);
+        $this->assertStringContainsString('Nf3', $parsed['moves']);
         $this->assertSame($parsed['game']->fen(), 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2');
                 
         
@@ -175,9 +175,9 @@ EOD
         , ['verbose' => true]);
         $this->assertArraySubset(['Event' => 'Earl tourn'], $parsed['header']);
         $this->assertArraySubset(['Site' => '?'], $parsed['header']);
-        $this->assertContains('e4', $parsed['moves']);
-        $this->assertContains('e5', $parsed['moves']);
-        $this->assertContains('Nf3', $parsed['moves']);
+        $this->assertStringContainsString('e4', $parsed['moves']);
+        $this->assertStringContainsString('e5', $parsed['moves']);
+        $this->assertStringContainsString('Nf3', $parsed['moves']);
         $this->assertSame($parsed['game']->fen(), 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2');
     }
     
