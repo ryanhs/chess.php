@@ -139,7 +139,7 @@ class Chess
     protected $header;
     protected $generateMovesCache;
 
-    public function __construct($fen = null)
+    public function __construct(?string $fen = null)
     {
         $this->clear();
 
@@ -150,7 +150,7 @@ class Chess
         }
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->board = [];
         $this->kings = [self::WHITE => null, self::BLACK => null];
@@ -168,7 +168,7 @@ class Chess
         }
     }
 
-    protected function updateSetup($fen)
+    protected function updateSetup(string $fen)
     {
         if (count($this->history) > 0) {
             return;
@@ -191,7 +191,7 @@ class Chess
         return $this->header;
     }
 
-    public function load($fen)
+    public function load(string $fen): bool
     {
         if (!self::validateFen($fen)['valid']) {
             return false;
@@ -252,12 +252,12 @@ class Chess
         return true;
     }
 
-    public function reset()
+    public function reset(): bool
     {
         return $this->load(self::DEFAULT_POSITION);
     }
 
-    public function fen($onlyPosition = false)
+    public function fen(bool $onlyPosition = false): string
     {
         $empty = 0;
         $fen = '';
@@ -313,12 +313,12 @@ class Chess
     }
 
     // just an alias
-    public function generateFen()
+    public function generateFen(): string
     {
         return $this->fen();
     }
 
-    public static function validateFen($fen)
+    public static function validateFen(string $fen): array
     {
         $errors = [
             0 => 'No errors.',
@@ -417,7 +417,7 @@ class Chess
      *
      * this is a custom implementation, not really a port from chess.js
      */
-    public function pgn($options = [])
+    public function pgn(array $options = []): string
     {
         $newline = !empty($options['newline_char']) ? $options['newline_char'] : "\n";
         $maxWidth = !empty($options['max_width']) ? $options['max_width'] : 0;
@@ -461,7 +461,7 @@ class Chess
         return $o;
     }
 
-    public static function parsePgn($pgn)
+    public static function parsePgn(string $pgn)
     {
         $header = [];
         $moves = [];
@@ -504,7 +504,7 @@ class Chess
     /* return TRUE or FALSE
      * but, if ($options['verbose'] == true), return compact('header', 'moves', 'game') or FALSE
      */
-    public static function validatePgn($pgn, $options = [])
+    public static function validatePgn(string $pgn, array $options = [])
     {
         $parsedPgn = self::parsePgn($pgn);
         $verbose = !empty($options['verbose']) ? $options['verbose'] : false;
@@ -539,7 +539,7 @@ class Chess
         ];
     }
 
-    public function import($chess)
+    public function import($chess): bool
     {
         if (is_a($chess, __CLASS__)) {
             $chess = $chess->export();
@@ -566,7 +566,7 @@ class Chess
     /* this function is not really port from chess.js
      * its just because i want to make a new logic, but interface almost the same
      */
-    public function loadPgn($pgn)
+    public function loadPgn(string $pgn)
     {
         $parsedPgn = self::validatePgn($pgn, ['verbose' => true]);
         if ($parsedPgn === false) {
@@ -578,7 +578,7 @@ class Chess
         return $this;
     }
 
-    public function history($options = [])
+    public function history(array $options = []): array
     {
         $moveHistory = [];
         $gameTmp = !empty($this->header['SetUp']) ? new self($this->header['FEN']) : new self();
@@ -610,7 +610,7 @@ class Chess
     }
 
     // this one from chess.js changed to return boolean (remove, true or false)
-    public function remove($square)
+    public function remove(int $square): bool
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
@@ -631,7 +631,7 @@ class Chess
         return true;
     }
 
-    public function get($square)
+    public function get(int $square)
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
@@ -641,7 +641,7 @@ class Chess
         return $this->board[self::SQUARES[$square]]; // shorcut?
     }
 
-    public static function squareColor($square, $light = 'light', $dark = 'dark')
+    public static function squareColor(int $square, string $light = 'light', string $dark = 'dark'): ?string
     {
         $squares = self::SQUARES;
         if (isset($squares[$square])) {
@@ -653,7 +653,7 @@ class Chess
         return null;
     }
 
-    public function put($piece, $square)
+    public function put(array $piece, int $square): bool
     {
         // check for valid piece object
         if (!(isset($piece['type']) && isset($piece['color']))) {
@@ -690,7 +690,7 @@ class Chess
     // here, we add first parameter turn, to make this really static method
     // because in chess.js var turn got from outside scope,
     // maybe need a little fix in chess.js or maybe i am :-p
-    public static function buildMove($turn, $board, $from, $to, $flags, $promotion = null)
+    public static function buildMove(int $turn, array $board, string $from, string $to, int $flags, ?string $promotion = null): array
     {
         $move = [
             'color' => $turn,
@@ -714,7 +714,7 @@ class Chess
         return $move;
     }
 
-    protected function makeMove($move)
+    protected function makeMove(array $move): void
     {
         $us = $this->turn();
         $them = self::swap_color($us);
@@ -807,13 +807,13 @@ class Chess
         $this->history[$historyKey]['position'] = $this->fen(true);
     }
 
-    protected function push($move)
+    protected function push(array $move): int
     {
         // just aliasing, because name method "push" is confusing
         return $this->recordMove($move);
     }
 
-    protected function recordMove($move)
+    protected function recordMove(array $move): int
     {
         $this->history[] = [
             'move' => $move,
@@ -836,7 +836,7 @@ class Chess
         return key($this->history);
     }
 
-    protected function moveFromSAN($san)
+    protected function moveFromSAN(string $san): ?array
     {
         // maybe somehow if performance is really important, we have to change this anonymous function to normal function
         $simplifiedSAN = function ($san) {
@@ -857,7 +857,7 @@ class Chess
         return null;
     }
 
-    protected function undoMove()
+    protected function undoMove(): ?array
     {
         $old = array_pop($this->history);
         if ($old === null) {
@@ -903,14 +903,14 @@ class Chess
         return $move;
     }
 
-    public function undo()
+    public function undo(): ?bool
     {
         $move = $this->undoMove();
 
         return $move !== null ? self::makePretty($move) : null; // make pretty
     }
 
-    protected function generateMoves($options = [])
+    protected function generateMoves(array $options = []): array
     {
         $cacheKey = $this->fen().json_encode($options);
 
@@ -1088,7 +1088,7 @@ class Chess
      *         promotion: 'q',
      *      })
      */
-    public function move($sanOrArray)
+    public function move($sanOrArray): ?array
     {
         $moveArray = null;
         $moves = $this->generateMoves();
@@ -1131,7 +1131,7 @@ class Chess
      * square coordinates to algebraic coordinates.  It also prunes an
      * unnecessary move keys resulting from a verbose call.
      */
-    public function moves($options = ['verbose' => false])
+    public function moves(array $options = ['verbose' => false]): array
     {
         $moves = $this->generateMoves();
         array_walk($moves, function (&$move) use ($options) {
@@ -1141,12 +1141,12 @@ class Chess
         return $moves;
     }
 
-    public function turn()
+    public function turn(): int
     {
         return $this->turn;
     }
 
-    protected function attacked($color, $square)
+    protected function attacked(int $color, int $square): bool
     {
         for ($i = self::SQUARES['a8']; $i <= self::SQUARES['h1']; ++$i) {
             if ($i & 0x88) {
@@ -1203,27 +1203,27 @@ class Chess
         return false;
     }
 
-    protected function kingAttacked($color)
+    protected function kingAttacked(int $color): bool
     {
         return $this->attacked(self::swap_color($color), $this->kings[$color]);
     }
 
-    public function inCheck()
+    public function inCheck(): bool
     {
         return $this->kingAttacked($this->turn);
     }
 
-    public function inCheckmate()
+    public function inCheckmate(): bool
     {
         return $this->inCheck() && count($this->generateMoves()) === 0;
     }
 
-    public function inStalemate()
+    public function inStalemate(): bool
     {
         return !$this->inCheck() && count($this->generateMoves()) === 0;
     }
 
-    public function insufficientMaterial()
+    public function insufficientMaterial(): bool
     {
         $pieces = [
             self::PAWN => 0,
@@ -1284,7 +1284,7 @@ class Chess
      * Zobrist key would be maintained in the make_move/undo_move functions,
      * avoiding the costly that we do below.
      */
-    public function inThreefoldRepetition()
+    public function inThreefoldRepetition(): bool
     {
         $hash = [];
         foreach ($this->history as $history) {
@@ -1302,18 +1302,18 @@ class Chess
         return false;
     }
 
-    public function halfMovesExceeded()
+    public function halfMovesExceeded(): bool
     {
         return $this->halfMoves >= 100;
     }
 
     // alias in*()
-    public function inHalfMovesExceeded()
+    public function inHalfMovesExceeded(): bool
     {
         return $this->halfMovesExceeded();
     }
 
-    public function inDraw()
+    public function inDraw(): bool
     {
         return
             $this->halfMovesExceeded() ||
@@ -1324,22 +1324,22 @@ class Chess
         ;
     }
 
-    public function gameOver()
+    public function gameOver(): bool
     {
         return $this->inDraw() || $this->inCheckmate();
     }
 
-    protected static function rank($i)
+    protected static function rank(int $i): int
     {
         return $i >> 4;
     }
 
-    protected static function file($i)
+    protected static function file(int $i): int
     {
         return $i & 15;
     }
 
-    protected static function algebraic($i)
+    protected static function algebraic(int $i): string
     {
         $f = self::file($i);
         $r = self::rank($i);
@@ -1347,13 +1347,13 @@ class Chess
         return substr('abcdefgh', $f, 1).substr('87654321', $r, 1);
     }
 
-    protected static function swap_color($color)
+    protected static function swap_color(int $color): int
     {
         return $color == self::WHITE ? self::BLACK : self::WHITE;
     }
 
     // this function is used to uniquely identify ambiguous moves
-    protected function getDisambiguator($move)
+    protected function getDisambiguator(array $move): string
     {
         $moves = $this->generateMoves();
 
@@ -1411,7 +1411,7 @@ class Chess
     }
 
     // convert a move from 0x88 to SAN
-    protected function moveToSAN($move)
+    protected function moveToSAN(array $move): string
     {
         $output = '';
         if ($move['flags'] & self::BITS['KSIDE_CASTLE']) {
@@ -1454,7 +1454,7 @@ class Chess
         return $output;
     }
 
-    protected function makePretty($uglyMove)
+    protected function makePretty(array $uglyMove): array
     {
         $move = $uglyMove;
         $move['san'] = $this->moveToSAN($move);
@@ -1477,7 +1477,7 @@ class Chess
         return $this->ascii();
     }
 
-    public function ascii()
+    public function ascii(): string
     {
         $s = '   +------------------------+'.PHP_EOL;
         for ($i = self::SQUARES['a8']; $i <= self::SQUARES['h1']; ++$i) {
