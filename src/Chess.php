@@ -690,7 +690,7 @@ class Chess
     // here, we add first parameter turn, to make this really static method
     // because in chess.js var turn got from outside scope,
     // maybe need a little fix in chess.js or maybe i am :-p
-    public static function buildMove(string $turn, array $board, string $from, string $to, int $flags, ?string $promotion = null): array
+    public static function buildMove(string $turn, array $board, int $from, int $to, int $flags, ?string $promotion = null): array
     {
         $move = [
             'color' => $turn,
