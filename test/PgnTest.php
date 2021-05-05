@@ -9,6 +9,8 @@ use \Ryanhs\Chess\Chess;
 
 class PgnTest extends \PHPUnit\Framework\TestCase
 {
+    use ArraySubsetAsserts;
+
     public function testClear()
     {
         // with clear
@@ -127,7 +129,7 @@ EOD
 [Site "?"]
 1.e4 e5 2.Nf3 oke failed
 EOD
-);
+        );
         $this->assertFalse($parsed);
         
         
@@ -138,7 +140,7 @@ oke failed here
 [Site "?"]
 1.e4 e5 2.Nf3
 EOD
-);
+        );
         $this->assertFalse($parsed);
         
         
@@ -148,7 +150,7 @@ EOD
 [Site "?"]
 1.e4 e5 2.Nf3 1-0
 EOD
-);
+        );
         $this->assertTrue($parsed);
         
         $parsed = Chess::validatePgn(
@@ -157,7 +159,7 @@ EOD
 [Site "?"]
 1.e4 e5 2.Nf3 1/2-1/2
 EOD
-);
+        );
         $this->assertTrue($parsed);
         
         

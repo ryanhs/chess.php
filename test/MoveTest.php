@@ -207,12 +207,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
     
         // normal pawn move
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['e2'],
-                    Chess::SQUARES['e4'],
-                    Chess::BITS['NORMAL']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['e2'],
+            Chess::SQUARES['e4'],
+            Chess::BITS['NORMAL']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'e4');
@@ -220,12 +220,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // normal knight move
         $chess->makeMovePublic($move);
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['g8'],
-                    Chess::SQUARES['f6'],
-                    Chess::BITS['NORMAL']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['g8'],
+            Chess::SQUARES['f6'],
+            Chess::BITS['NORMAL']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Nf6');
@@ -233,12 +233,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // normal pawn capture
         $chess->load('rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['e4'],
-                    Chess::SQUARES['d5'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['e4'],
+            Chess::SQUARES['d5'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'exd5');
@@ -246,12 +246,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // en passant capture
         $chess->load('rnbqkbnr/ppp2ppp/8/3Pp3/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['d5'],
-                    Chess::SQUARES['e6'],
-                    Chess::BITS['EP_CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['d5'],
+            Chess::SQUARES['e6'],
+            Chess::BITS['EP_CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'dxe6');
@@ -259,12 +259,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // normal knight capture
         $chess->load('rnbqkb1r/ppp1pppp/5n2/3P4/8/5N2/PPPP1PPP/RNBQKB1R b KQkq - 2 3');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['f6'],
-                    Chess::SQUARES['d5'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['f6'],
+            Chess::SQUARES['d5'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Nxd5');
@@ -272,13 +272,13 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // promotion
         $chess->load('8/2KP4/8/5k2/8/8/8/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['d7'],
-                    Chess::SQUARES['d8'],
-                    Chess::BITS['PROMOTION'],
-                    Chess::ROOK
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['d7'],
+            Chess::SQUARES['d8'],
+            Chess::BITS['PROMOTION'],
+            Chess::ROOK
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'd8=R');
@@ -286,12 +286,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // check
         $chess->load('3R4/2K5/8/5k2/8/8/8/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['d8'],
-                    Chess::SQUARES['f8'],
-                    Chess::BITS['NORMAL']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['d8'],
+            Chess::SQUARES['f8'],
+            Chess::BITS['NORMAL']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Rf8+');
@@ -299,12 +299,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // checkmate
         $chess->load('5k2/8/1R3K2/8/8/8/8/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['b6'],
-                    Chess::SQUARES['b8'],
-                    Chess::BITS['NORMAL']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['b6'],
+            Chess::SQUARES['b8'],
+            Chess::BITS['NORMAL']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Rb8#');
@@ -313,12 +313,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: row
         $chess->load('2N2k2/8/3p4/8/2N5/8/1K6/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['c4'],
-                    Chess::SQUARES['d6'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['c4'],
+            Chess::SQUARES['d6'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'N4xd6');
@@ -327,12 +327,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: rank > 0 & file > 0
         $chess->load('8/8/8/2qqq3/2qPq3/2qqq3/1n6/K6k b - - 0 1'); // this one is really ambiguous haha
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['d5'],
-                    Chess::SQUARES['d4'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['d5'],
+            Chess::SQUARES['d4'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Qd5xd4');
@@ -340,12 +340,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: col
         $chess->load('5k2/8/3p4/8/2N1N3/8/1K6/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['e4'],
-                    Chess::SQUARES['d6'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['e4'],
+            Chess::SQUARES['d6'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Nexd6');
@@ -353,12 +353,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: col
         $chess->load('5k2/8/3p4/8/2N1N3/8/1K6/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['c4'],
-                    Chess::SQUARES['d6'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['c4'],
+            Chess::SQUARES['d6'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Ncxd6');
@@ -366,12 +366,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: normal capture
         $chess->load('5k2/8/3p2R1/8/2N5/8/1K6/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['c4'],
-                    Chess::SQUARES['d6'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['c4'],
+            Chess::SQUARES['d6'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Nxd6');
@@ -379,12 +379,12 @@ class MoveTest extends \PHPUnit\Framework\TestCase
         // ambiguous moves: normal capture
         $chess->load('5k2/8/3p2R1/8/2N5/8/1K6/8 w - - 0 1');
         $move = ($chess->buildMovePublic(
-                    $chess->turn(),
-                    $chess->getBoard(),
-                    Chess::SQUARES['g6'],
-                    Chess::SQUARES['d6'],
-                    Chess::BITS['CAPTURE']
-                ));
+            $chess->turn(),
+            $chess->getBoard(),
+            Chess::SQUARES['g6'],
+            Chess::SQUARES['d6'],
+            Chess::BITS['CAPTURE']
+        ));
         $chess->makeMovePublic($move);
         $undo = $chess->undo();
         $this->assertSame($undo['san'], 'Rxd6');
