@@ -403,8 +403,8 @@ class Chess
 
         // 11th criterion: en-passant if last is black's move, then its must be white turn
         if (strlen($tokens[3]) > 1) {
-            if (($tokens[3]{1} == '3' && $tokens[1] == 'w') ||
-                ($tokens[3]{1} == '6' && $tokens[1] == 'b')) {
+            if (($tokens[3][1] == '3' && $tokens[1] == 'w') ||
+                ($tokens[3][1] == '6' && $tokens[1] == 'b')) {
                 return ['valid' => false, 'error_number' => 11, 'error' => $errors[11]];
             }
         }
