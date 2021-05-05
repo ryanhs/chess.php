@@ -653,7 +653,7 @@ class Chess
         return null;
     }
 
-    public function put(array $piece, int $square): bool
+    public function put(array $piece, string $square): bool
     {
         // check for valid piece object
         if (!(isset($piece['type']) && isset($piece['color']))) {
