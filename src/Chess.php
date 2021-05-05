@@ -378,16 +378,16 @@ class Chess
             $sumFields = 0;
             $previousWasNumber = false;
             for ($k = 0; $k < strlen($rows[$i]); ++$k) {
-                if (ctype_digit($rows[$i]{$k})) {
+                if (ctype_digit($rows[$i][$k])) {
                     // 8th criterion: every row is valid
                     if ($previousWasNumber) {
                         return ['valid' => false, 'error_number' => 8, 'error' => $errors[8]];
                     }
-                    $sumFields += intval($rows[$i]{$k}, 10);
+                    $sumFields += intval($rows[$i][$k], 10);
                     $previousWasNumber = true;
                 } else {
                     // 9th criterion: check symbols of piece
-                    if (strpos(self::SYMBOLS, $rows[$i]{$k}) === false) {
+                    if (strpos(self::SYMBOLS, $rows[$i][$k]) === false) {
                         return ['valid' => false, 'error_number' => 9, 'error' => $errors[9]];
                     }
                     ++$sumFields;
