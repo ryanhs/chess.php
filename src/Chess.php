@@ -610,7 +610,7 @@ class Chess
     }
 
     // this one from chess.js changed to return boolean (remove, true or false)
-    public function remove(int $square): bool
+    public function remove(string $square): bool
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
@@ -903,7 +903,7 @@ class Chess
         return $move;
     }
 
-    public function undo(): ?bool
+    public function undo(): ?array
     {
         $move = $this->undoMove();
 
