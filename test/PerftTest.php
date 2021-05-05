@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use \Ryanhs\Chess\Chess;
 
 // source: https://chessprogramming.wikispaces.com/Perft+Results
 class PerftTest extends \PHPUnit\Framework\TestCase
