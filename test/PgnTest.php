@@ -9,6 +9,8 @@ use \Ryanhs\Chess\Chess;
 
 class PgnTest extends \PHPUnit\Framework\TestCase
 {
+    use ArraySubsetAsserts;
+
     public function testClear()
     {
         // with clear
