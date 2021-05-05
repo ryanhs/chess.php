@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use \Ryanhs\Chess\Chess;
 
 class PgnTest extends \PHPUnit\Framework\TestCase
