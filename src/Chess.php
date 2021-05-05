@@ -631,7 +631,7 @@ class Chess
         return true;
     }
 
-    public function get(int $square)
+    public function get(string $square)
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
