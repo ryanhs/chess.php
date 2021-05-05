@@ -1141,12 +1141,12 @@ class Chess
         return $moves;
     }
 
-    public function turn(): int
+    public function turn(): string
     {
         return $this->turn;
     }
 
-    protected function attacked(int $color, int $square): bool
+    protected function attacked(string $color, int $square): bool
     {
         for ($i = self::SQUARES['a8']; $i <= self::SQUARES['h1']; ++$i) {
             if ($i & 0x88) {
@@ -1203,7 +1203,7 @@ class Chess
         return false;
     }
 
-    protected function kingAttacked(int $color): bool
+    protected function kingAttacked(string $color): bool
     {
         return $this->attacked(self::swap_color($color), $this->kings[$color]);
     }
