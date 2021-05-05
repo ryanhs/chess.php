@@ -7,7 +7,7 @@ detection - basically everything but the AI.
 NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php  
 
 [![Latest Stable Version](https://poser.pugx.org/ryanhs/chess.php/v/stable)](https://packagist.org/packages/ryanhs/chess.php)
-[![Build Status](https://travis-ci.org/ryanhs/chess.php.svg?branch=master)](https://travis-ci.org/ryanhs/chess.php)
+[![CI](https://github.com/ryanhs/chess.php/actions/workflows/php.yml/badge.svg)](https://github.com/ryanhs/chess.php/actions/workflows/php.yml)
 [![MIT License](https://poser.pugx.org/ryanhs/chess.php/license)](https://packagist.org/packages/ryanhs/chess.php)  
 
 ## Installation
