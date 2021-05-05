@@ -641,7 +641,7 @@ class Chess
         return $this->board[self::SQUARES[$square]]; // shorcut?
     }
 
-    public static function squareColor(int $square, string $light = 'light', string $dark = 'dark'): ?string
+    public static function squareColor(string $square, string $light = 'light', string $dark = 'dark'): ?string
     {
         $squares = self::SQUARES;
         if (isset($squares[$square])) {
@@ -1347,7 +1347,7 @@ class Chess
         return substr('abcdefgh', $f, 1).substr('87654321', $r, 1);
     }
 
-    protected static function swap_color(string $color): int
+    protected static function swap_color(string $color): string
     {
         return $color == self::WHITE ? self::BLACK : self::WHITE;
     }
