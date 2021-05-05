@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use \Ryanhs\Chess\Chess;
 
 class PgnTest extends \PHPUnit\Framework\TestCase
@@ -44,20 +45,20 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         
         
         // check setup ok
-        $this->assertContains('[White "John"]', $pgn);
-        $this->assertContains('[Black "Cena"]', $pgn);
-        $this->assertContains('[FEN "'.$fen.'"]', $pgn);
+        $this->assertStringContainsString('[White "John"]', $pgn);
+        $this->assertStringContainsString('[Black "Cena"]', $pgn);
+        $this->assertStringContainsString('[FEN "'.$fen.'"]', $pgn);
         
         // check movements
-        $this->assertContains('1. e4 e6', $pgn);
-        $this->assertContains('2. d4 d5', $pgn);
-        $this->assertContains('3. Nc3 Nf6', $pgn);
-        $this->assertContains('4. Bg5 dxe4', $pgn);
-        $this->assertContains('5. Nxe4 Be7', $pgn);
+        $this->assertStringContainsString('1. e4 e6', $pgn);
+        $this->assertStringContainsString('2. d4 d5', $pgn);
+        $this->assertStringContainsString('3. Nc3 Nf6', $pgn);
+        $this->assertStringContainsString('4. Bg5 dxe4', $pgn);
+        $this->assertStringContainsString('5. Nxe4 Be7', $pgn);
         // .
         // .
         // .
-        $this->assertContains('8. Nc3 Bf6', $pgn);
+        $this->assertStringContainsString('8. Nc3 Bf6', $pgn);
     }
     
     public function testBlackFirst()
@@ -76,12 +77,12 @@ class PgnTest extends \PHPUnit\Framework\TestCase
         //~ echo $pgn;exit;
         
         // check setup ok
-        $this->assertContains('[SetUp "1"]', $pgn);
-        $this->assertContains('[FEN "'.$fen.'"]', $pgn);
+        $this->assertStringContainsString('[SetUp "1"]', $pgn);
+        $this->assertStringContainsString('[FEN "'.$fen.'"]', $pgn);
         
         // check movements
-        $this->assertContains('1. ... e5', $pgn);
-        $this->assertContains('2. Nf3 Nc6', $pgn);
+        $this->assertStringContainsString('1. ... e5', $pgn);
+        $this->assertStringContainsString('2. Nf3 Nc6', $pgn);
     }
     
     public function testParsePgn()

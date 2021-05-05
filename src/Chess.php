@@ -203,7 +203,7 @@ class Chess
         $position = $tokens[0];
         $square = 0;
         for ($i = 0; $i < strlen($position); ++$i) {
-            $piece = $position{$i};
+            $piece = $position[$i];
             if ($piece === '/') {
                 $square += 8;
             } elseif (ctype_digit($piece)) {
@@ -378,16 +378,16 @@ class Chess
             $sumFields = 0;
             $previousWasNumber = false;
             for ($k = 0; $k < strlen($rows[$i]); ++$k) {
-                if (ctype_digit($rows[$i]{$k})) {
+                if (ctype_digit($rows[$i][$k])) {
                     // 8th criterion: every row is valid
                     if ($previousWasNumber) {
                         return ['valid' => false, 'error_number' => 8, 'error' => $errors[8]];
                     }
-                    $sumFields += intval($rows[$i]{$k}, 10);
+                    $sumFields += intval($rows[$i][$k], 10);
                     $previousWasNumber = true;
                 } else {
                     // 9th criterion: check symbols of piece
-                    if (strpos(self::SYMBOLS, $rows[$i]{$k}) === false) {
+                    if (strpos(self::SYMBOLS, $rows[$i][$k]) === false) {
                         return ['valid' => false, 'error_number' => 9, 'error' => $errors[9]];
                     }
                     ++$sumFields;
@@ -403,8 +403,8 @@ class Chess
 
         // 11th criterion: en-passant if last is black's move, then its must be white turn
         if (strlen($tokens[3]) > 1) {
-            if (($tokens[3]{1} == '3' && $tokens[1] == 'w') ||
-                ($tokens[3]{1} == '6' && $tokens[1] == 'b')) {
+            if (($tokens[3][1] == '3' && $tokens[1] == 'w') ||
+                ($tokens[3][1] == '6' && $tokens[1] == 'b')) {
                 return ['valid' => false, 'error_number' => 11, 'error' => $errors[11]];
             }
         }
@@ -610,7 +610,7 @@ class Chess
     }
 
     // this one from chess.js changed to return boolean (remove, true or false)
-    public function remove(int $square): bool
+    public function remove(string $square): bool
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
@@ -631,7 +631,7 @@ class Chess
         return true;
     }
 
-    public function get(int $square)
+    public function get(string $square)
     {
         // check for valid square
         if (!array_key_exists($square, self::SQUARES)) {
@@ -641,7 +641,7 @@ class Chess
         return $this->board[self::SQUARES[$square]]; // shorcut?
     }
 
-    public static function squareColor(int $square, string $light = 'light', string $dark = 'dark'): ?string
+    public static function squareColor(string $square, string $light = 'light', string $dark = 'dark'): ?string
     {
         $squares = self::SQUARES;
         if (isset($squares[$square])) {
@@ -653,7 +653,7 @@ class Chess
         return null;
     }
 
-    public function put(array $piece, int $square): bool
+    public function put(array $piece, string $square): bool
     {
         // check for valid piece object
         if (!(isset($piece['type']) && isset($piece['color']))) {
@@ -690,7 +690,7 @@ class Chess
     // here, we add first parameter turn, to make this really static method
     // because in chess.js var turn got from outside scope,
     // maybe need a little fix in chess.js or maybe i am :-p
-    public static function buildMove(int $turn, array $board, string $from, string $to, int $flags, ?string $promotion = null): array
+    public static function buildMove(string $turn, array $board, int $from, int $to, int $flags, ?string $promotion = null): array
     {
         $move = [
             'color' => $turn,
@@ -903,7 +903,7 @@ class Chess
         return $move;
     }
 
-    public function undo(): ?bool
+    public function undo(): ?array
     {
         $move = $this->undoMove();
 
@@ -1141,12 +1141,12 @@ class Chess
         return $moves;
     }
 
-    public function turn(): int
+    public function turn(): string
     {
         return $this->turn;
     }
 
-    protected function attacked(int $color, int $square): bool
+    protected function attacked(string $color, int $square): bool
     {
         for ($i = self::SQUARES['a8']; $i <= self::SQUARES['h1']; ++$i) {
             if ($i & 0x88) {
@@ -1203,7 +1203,7 @@ class Chess
         return false;
     }
 
-    protected function kingAttacked(int $color): bool
+    protected function kingAttacked(string $color): bool
     {
         return $this->attacked(self::swap_color($color), $this->kings[$color]);
     }
@@ -1347,7 +1347,7 @@ class Chess
         return substr('abcdefgh', $f, 1).substr('87654321', $r, 1);
     }
 
-    protected static function swap_color(int $color): int
+    protected static function swap_color(string $color): string
     {
         return $color == self::WHITE ? self::BLACK : self::WHITE;
     }
