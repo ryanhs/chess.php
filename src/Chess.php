@@ -717,7 +717,7 @@ class Chess
     protected function makeMove(array $move): void
     {
         $us = $this->turn();
-        $them = self::swap_color($us);
+        $them = self::swapColor($us);
         $historyKey = $this->recordMove($move);
 
         $this->board[$move['to']] = $this->board[$move['from']];
@@ -873,7 +873,7 @@ class Chess
         $this->moveNumber = $old['moveNumber'];
 
         $us = $this->turn;
-        $them = self::swap_color($us);
+        $them = self::swapColor($us);
 
         $this->board[$move['from']] = $this->board[$move['to']];
         $this->board[$move['from']]['type'] = $move['piece']; // to undo any promotions
@@ -921,7 +921,7 @@ class Chess
 
         $moves = [];
         $us = $this->turn();
-        $them = self::swap_color($us);
+        $them = self::swapColor($us);
         $secondRank = [self::BLACK => self::RANK_7,
                         self::WHITE => self::RANK_2];
 
@@ -1205,7 +1205,7 @@ class Chess
 
     protected function kingAttacked(string $color): bool
     {
-        return $this->attacked(self::swap_color($color), $this->kings[$color]);
+        return $this->attacked(self::swapColor($color), $this->kings[$color]);
     }
 
     public function inCheck(): bool
@@ -1347,7 +1347,7 @@ class Chess
         return substr('abcdefgh', $f, 1).substr('87654321', $r, 1);
     }
 
-    protected static function swap_color(string $color): string
+    protected static function swapColor(string $color): string
     {
         return $color == self::WHITE ? self::BLACK : self::WHITE;
     }
