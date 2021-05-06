@@ -1,36 +1,31 @@
 # Chess.php
 
-chess.php is a PHP chess library that is used for chess move
+`chess.php` is a PHP chess library that is used for chess move
 generation/validation, piece placement/movement, and check/checkmate/stalemate
 detection - basically everything but the AI.
 
-NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php  
+<b>NOTE: this is a port of [chess.js](https://github.com/jhlywa/chess.js) for php</b>
+
+You can check out the original `chess.js` code [here](https://github.com/jhlywa/chess.js).
 
 [![Latest Stable Version](https://poser.pugx.org/ryanhs/chess.php/v/stable)](https://packagist.org/packages/ryanhs/chess.php)
 [![CI](https://github.com/ryanhs/chess.php/actions/workflows/php.yml/badge.svg)](https://github.com/ryanhs/chess.php/actions/workflows/php.yml)
-[![MIT License](https://poser.pugx.org/ryanhs/chess.php/license)](https://packagist.org/packages/ryanhs/chess.php)  
+[![MIT License](https://poser.pugx.org/ryanhs/chess.php/license)](https://packagist.org/packages/ryanhs/chess.php)
 
 ## Installation
-use composer with `composer require ryanhs/chess.php`   
-or put in your composer.json  
-```json
-"require": {
-    "ryanhs/chess.php": "^1.0"
-}
+You can install this package by running this command assuming you have composer installed. 
+```sh
+composer require ryanhs/chess.php
 ```
-
-if you doesn't know composer, its a really usefull tools in php for package management,   
-try to learn composer [here](https://getcomposer.org/doc/00-intro.md)
+If you don't have composer installed you can install it directly from their [website](https://getcomposer.org/).
 
 ## Coding Style
-about coding style, naming system..
-because this is a PHP, i try to stick to use PHP-PSR, like game_over() become gameOver()  
+`chess.php` follows PSR-2 coding standards. For example a function name like `do_something()` gets transformed into `doSomething()`.
+Be sure to correctly indent your code and add comments. Adding comments will help other developers know what a block of code does.
+Other then that all contributions are welcomed.
 
-just keep in mind, any function name transformed into camelCase
-
-## Example Code
-The code below plays a complete game of chess ... randomly.
-
+## Basic Usage
+Here is a sample code that plays a random game of chess.
 ```php
 <?php
 
@@ -48,16 +43,5 @@ while (!$chess->gameOver()) {
 echo $chess->ascii() . PHP_EOL;
 ```
 
-## Chess.js
-you can check original chess.js [here](https://github.com/jhlywa/chess.js)
-
-## Chess.php documentation
-you can check it here: [https://ryanhs.github.io/chess.php](https://ryanhs.github.io/chess.php)
-
-## BUGS
-
--
-
-## TODO
-
--
+## Documentation
+You can check out the full documentation at [https://ryanhs.github.io/chess.php](https://ryanhs.github.io/chess.php).
