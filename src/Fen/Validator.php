@@ -88,23 +88,23 @@ trait Validator
                 // 7th criterion: 1st field contains 8 rows
                 throw new InvalidFenException($this->errors[6]);
             }
-            for ($i = 0; $i < $rowCount; $i++) {
+            for ($i = 0; $i < $rowCount; ++$i) {
                 $sumFields = 0;
                 $previousWasNumber = false;
                 for ($k = 0; $k < strlen($rows[$i]); ++$k) {
                     if (ctype_digit($rows[$i][$k])) {
-                       if ($previousWasNumber) {
-                           // 8th criterion: every row is valid
-                           throw new InvalidFenException($this->errors[7]);
-                       }
-                       $sumFields += intval($rows[$i][$k]);
-                       $previousWasNumber = true;
+                        if ($previousWasNumber) {
+                            // 8th criterion: every row is valid
+                            throw new InvalidFenException($this->errors[7]);
+                        }
+                        $sumFields += intval($rows[$i][$k]);
+                        $previousWasNumber = true;
                     } else {
                         if (strpos('pnbrqkPNBRQK', $rows[$i][$k]) === false) {
                             // 9th criterion: check symbols of piece
                             throw new InvalidFenException($this->errors[8]);
                         }
-                        $sumFields++;
+                        ++$sumFields;
                         $previousWasNumber = false;
                     }
                 }
