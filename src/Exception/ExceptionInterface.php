@@ -27,6 +27,8 @@ declare(strict_types=1);
  * SOFTWARE.
  */
 
+namespace Ryanhs\Chess\Exception;
+
 use Throwable;
 
 /**
