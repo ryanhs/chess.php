@@ -5,9 +5,12 @@ declare(strict_types=1);
 require __DIR__.'/../vendor/autoload.php';
 
 use \Ryanhs\Chess\Chess;
+use Ryanhs\Chess\Fen\Validator;
 
 class FenTest extends \PHPUnit\Framework\TestCase
 {
+    use Validator;
+
     public function testClear()
     {
         $chess = new Chess();
@@ -35,7 +38,7 @@ class FenTest extends \PHPUnit\Framework\TestCase
         ];
         
         foreach ($positions as $position) {
-            $load = Chess::validateFen($position['fen']);
+            $load = $this->validateFen($position['fen']);
             //~ echo $position['fen'] . ' => ' . ($load['valid'] ? 'T' : 'F') . PHP_EOL;
             $this->assertEquals($load['valid'], $position['should_pass']);
         }
