@@ -345,10 +345,10 @@ class FenTest extends TestCase
         $chess = new Chess();
         foreach ($positions as $position) {
             if ($chess->load($position['fen'])) {
-                echo $position['fen'] . '|' . strval($position['should_pass']) . "\n";
+                echo $position['fen'].'|'.strval($position['should_pass'])."\n";
                 $this->assertEquals(true, $position['should_pass']);
             } else {
-                echo $position['fen'] . '|' . strval($position['should_pass']) . "\n";
+                echo $position['fen'].'|'.strval($position['should_pass'])."\n";
                 $this->assertEquals(false, $position['should_pass']);
             }
         }
