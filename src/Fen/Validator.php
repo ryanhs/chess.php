@@ -106,7 +106,7 @@ trait Validator
                     $previousWasNumber = true;
                 } else {
                     // 9th criterion: check symbols of piece
-                    if (strpos(self::SYMBOLS, $rows[$i][$k]) === false) {
+                    if (strpos('pnbrqkPNBRQK', $rows[$i][$k]) === false) {
                         throw new InvalidFenException($this->errors[8]);
                     }
                     ++$sumFields;
