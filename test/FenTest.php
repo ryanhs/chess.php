@@ -16,17 +16,10 @@ class FenTest extends TestCase
     /**
      * @return void Returns nothing.
      */
-    public function __construct()
-    {
-        $this->chess = new Chess();
-    }
-
-    /**
-     * @return void Returns nothing.
-     */
     public function testClear()
     {
-        $this->chess->clear();
+        $chess = new Chess();
+        $chess->clear();
         $this->assertSame($chess->fen(), '8/8/8/8/8/8/8/8 w - - 0 1');
     }
 
@@ -158,8 +151,9 @@ class FenTest extends TestCase
             /* bad piece (X)*/
             ['fen' => '1nbqkbn1/pppp1ppX/8/4p3/4P3/8/PPPP1PPP/1NBQKBN1 b - - 1 2', 'should_pass' => false],
         ];
+        $chess = new Chess();
         foreach ($positions as $position) {
-            $load = $this->chess->validateFen($position['fen']);
+            $load = $chess->validateFen($position['fen']);
             //~ echo $position['fen'] . ' => ' . ($load['valid'] ? 'T' : 'F') . PHP_EOL;
             $this->assertEquals($load, $position['should_pass']);
         }
@@ -348,8 +342,9 @@ class FenTest extends TestCase
             ['fen' => 'r1rb2k1/5ppp/pqp5/3pPb2/QB1P4/2R2N2/P4PPP/2R3K1 b - - 7 23', 'error_number' => 0, 'should_pass' => true],
             ['fen' => '3r1r2/3P2pk/1p1R3p/1Bp2p2/6q1/4Q3/PP3P1P/7K w - - 4 30', 'error_number' => 0, 'should_pass' => true],
         ];
+        $chess = new Chess();
         foreach ($positions as $position) {
-            $load = $this->chess->validateFen($position['fen']);
+            $load = $chess->validateFen($position['fen']);
             //~ echo $position['fen'] . ' => ' . ($load['valid'] ? 'T' : 'F') . PHP_EOL;
             $this->assertEquals($load, $position['should_pass']);
         }
@@ -383,8 +378,9 @@ class FenTest extends TestCase
             ['fen' => '8/k7/Pr2R3/7p/8/4n1P1/1r2p1P1/4R1K1 w - - 0 59', 'error_number' => 0, 'should_pass' => true],
             ['fen' => '3r1r2/3P2pk/1p1R3p/1Bp2p2/6q1/4Q3/PP3P1P/7K w - - 4 30', 'error_number' => 0, 'should_pass' => true],
         ];
+        $chess = new Chess();
         foreach ($positions as $position) {
-            $this->chess->load($position['fen']);
+            $chess->load($position['fen']);
             $this->assertEquals($position['fen'], $chess->fen());
         }
     }
