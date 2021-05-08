@@ -97,7 +97,7 @@ trait Validator
             $sumFields = 0;
             $previousWasNumber = false;
             for ($k = 0; $k < strlen($rows[$i]); ++$k) {
-                if (ctype_digit($rows[$i]{$k})) {
+                if (ctype_digit($rows[$i][$k])) {
                     // 8th criterion: every row is valid
                     if ($previousWasNumber) {
                         throw new InvalidFenException($this->errors[7]);
@@ -106,7 +106,7 @@ trait Validator
                     $previousWasNumber = true;
                 } else {
                     // 9th criterion: check symbols of piece
-                    if (strpos(self::SYMBOLS, $rows[$i][$k]) === false) {
+                    if (strpos('pnbrqkPNBRQK', $rows[$i][$k]) === false) {
                         throw new InvalidFenException($this->errors[8]);
                     }
                     ++$sumFields;
