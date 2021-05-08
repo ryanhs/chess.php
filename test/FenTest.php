@@ -344,9 +344,12 @@ class FenTest extends TestCase
         ];
         $chess = new Chess();
         foreach ($positions as $position) {
-            $load = $chess->validateFen($position['fen']);
-            //~ echo $position['fen'] . ' => ' . ($load['valid'] ? 'T' : 'F') . PHP_EOL;
-            $this->assertEquals($load, $position['should_pass']);
+            try {
+                $chess->validateFen($position['fen']);
+                $this->assertEquals(true, $position['should_pass']);
+            } catch (InvalidFenException $e) {
+                $this->assertEquals(false, $position['should_pass']);
+            }
         }
     }
 
