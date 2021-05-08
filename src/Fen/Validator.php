@@ -102,11 +102,11 @@ trait Validator
                     if ($previousWasNumber) {
                         throw new InvalidFenException($this->errors[7]);
                     }
-                    $sumFields += intval($rows[$i]{$k}, 10);
+                    $sumFields += intval($rows[$i][$k], 10);
                     $previousWasNumber = true;
                 } else {
                     // 9th criterion: check symbols of piece
-                    if (strpos(self::SYMBOLS, $rows[$i]{$k}) === false) {
+                    if (strpos(self::SYMBOLS, $rows[$i][$k]) === false) {
                         throw new InvalidFenException($this->errors[8]);
                     }
                     ++$sumFields;
@@ -120,8 +120,8 @@ trait Validator
         }
         // 11th criterion: en-passant if last is black's move, then its must be white turn
         if (strlen($tokens[3]) > 1) {
-            if (($tokens[3]{1} == '3' && $tokens[1] == 'w') ||
-                ($tokens[3]{1} == '6' && $tokens[1] == 'b')) {
+            if (($tokens[3][1] == '3' && $tokens[1] == 'w') ||
+                ($tokens[3][1] == '6' && $tokens[1] == 'b')) {
                 throw new InvalidFenException($this->errors[10]);
             }
         }
