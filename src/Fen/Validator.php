@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /**
  * Chess.php
  *
@@ -62,62 +60,66 @@ trait Validator
      */
     public function validateFen(string $fen): void
     {
-        $parts = explode(' ', $fen);
-        if (count($parts) !== 6) {
-            // 1st criterion: 6 space-separated fields
+        $tokens = explode(' ', $fen);
+        // 1st criterion: 6 space-separated fields
+        if (count($tokens) !== 6) {
             throw new InvalidFenException($this->errors[0]);
-        } elseif (!ctype_digit($parts[5]) || intval($parts[5]) <= 0) {
-            // 2nd criterion: move number field is a integer value > 0
+        }
+        // 2nd criterion: move number field is a integer value > 0
+        if (!ctype_digit($tokens[5]) || intval($tokens[5], 10) <= 0) {
             throw new InvalidFenException($this->errors[1]);
-        } elseif (!ctype_digit($parts[4]) || intval($parts[4]) < 0) {
-            // 3rd criterion: half move counter is an integer >= 0
+        }
+        // 3rd criterion: half move counter is an integer >= 0
+        if (!ctype_digit($tokens[4]) || intval($tokens[4], 10) < 0) {
             throw new InvalidFenException($this->errors[2]);
-        } elseif (!(preg_match('/^(-|[a-h]{1}[3|6]{1})$/', $parts[3]) === 1)) {
-            // 4th criterion: 4th field is a valid e.p.-string
+        }
+        // 4th criterion: 4th field is a valid e.p.-string
+        if (!(preg_match('/^(-|[a-h]{1}[3|6]{1})$/', $tokens[3]) === 1)) {
             throw new InvalidFenException($this->errors[3]);
-        } elseif (!(preg_match('/(^-$)|(^[K|Q|k|q]{1,}$)/', $parts[2]) === 1)) {
-            // 5th criterion: 3th field is a valid castle-string
+        }
+        // 5th criterion: 3th field is a valid castle-string
+        if (!(preg_match('/(^-$)|(^[K|Q|k|q]{1,}$)/', $tokens[2]) === 1)) {
             throw new InvalidFenException($this->errors[4]);
-        } elseif (!(preg_match('/^(w|b)$/', $parts[1]) === 1)) {
-            // 6th criterion: 2nd field is "w" (white) or "b" (black)
+        }
+        // 6th criterion: 2nd field is "w" (white) or "b" (black)
+        if (!(preg_match('/^(w|b)$/', $tokens[1]) === 1)) {
             throw new InvalidFenException($this->errors[5]);
-        } else {
-            $rows = explode('/', $parts[0]);
-            $rowCount = count($rows);
-            if ($rowCount !== 8) {
-                // 7th criterion: 1st field contains 8 rows
-                throw new InvalidFenException($this->errors[6]);
-            }
-            for ($i = 0; $i < $rowCount; ++$i) {
-                $sumFields = 0;
-                $previousWasNumber = false;
-                for ($k = 0; $k < strlen($rows[$i]); ++$k) {
-                    if (ctype_digit($rows[$i][$k])) {
-                        if ($previousWasNumber) {
-                            // 8th criterion: every row is valid
-                            throw new InvalidFenException($this->errors[7]);
-                        }
-                        $sumFields += intval($rows[$i][$k]);
-                        $previousWasNumber = true;
-                    } else {
-                        if (strpos('pnbrqkPNBRQK', $rows[$i][$k]) === false) {
-                            // 9th criterion: check symbols of piece
-                            throw new InvalidFenException($this->errors[8]);
-                        }
-                        ++$sumFields;
-                        $previousWasNumber = false;
+        }
+        // 7th criterion: 1st field contains 8 rows
+        $rows = explode('/', $tokens[0]);
+        if (count($rows) !== 8) {
+            throw new InvalidFenException($this->errors[6]);
+        }
+        // 8-10th check
+        for ($i = 0; $i < count($rows); ++$i) {
+            $sumFields = 0;
+            $previousWasNumber = false;
+            for ($k = 0; $k < strlen($rows[$i]); ++$k) {
+                if (ctype_digit($rows[$i]{$k})) {
+                    // 8th criterion: every row is valid
+                    if ($previousWasNumber) {
+                        throw new InvalidFenException($this->errors[7]);
                     }
+                    $sumFields += intval($rows[$i]{$k}, 10);
+                    $previousWasNumber = true;
+                } else {
+                    // 9th criterion: check symbols of piece
+                    if (strpos(self::SYMBOLS, $rows[$i]{$k}) === false) {
+                        throw new InvalidFenException($this->errors[8]);
+                    }
+                    ++$sumFields;
+                    $previousWasNumber = false;
                 }
             }
+            // 10th criterion: check sum piece + empty square must be 8
             if ($sumFields !== 8) {
-                // 10th criterion: check sum piece + empty square must be 8
                 throw new InvalidFenException($this->errors[9]);
             }
         }
-        if (strlen($parts[3]) > 1) {
-            if (($parts[3][1] == '3' && $parts[1] == 'w') ||
-                ($parts[3][1] == '6' && $parts[1] == 'b')) {
-                // 11th criterion: en-passant if last is black's move, then its must be white turn
+        // 11th criterion: en-passant if last is black's move, then its must be white turn
+        if (strlen($tokens[3]) > 1) {
+            if (($tokens[3]{1} == '3' && $tokens[1] == 'w') ||
+                ($tokens[3]{1} == '6' && $tokens[1] == 'b')) {
                 throw new InvalidFenException($this->errors[10]);
             }
         }
