@@ -97,7 +97,7 @@ trait Validator
             $sumFields = 0;
             $previousWasNumber = false;
             for ($k = 0; $k < strlen($rows[$i]); ++$k) {
-                if (ctype_digit($rows[$i]{$k})) {
+                if (ctype_digit($rows[$i][$k])) {
                     // 8th criterion: every row is valid
                     if ($previousWasNumber) {
                         throw new InvalidFenException($this->errors[7]);
