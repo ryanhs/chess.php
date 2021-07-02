@@ -847,174 +847,88 @@ class Chess
 
         return $move !== null ? self::makePretty($move) : null; // make pretty
     }
-
-    protected function generateMoves(array $options = []): array
+    
+    /**
+     * Get a set of avaliable moves to play.
+     *
+     * @param array $options A list of options to pass.
+     *
+     * @return iterable Returns the generator object.
+     */
+    protected function generateMoves(array $options = []): iterable
     {
-        $cacheKey = $this->fen().json_encode($options);
-
-        // check cache first
-        if (isset($this->generateMovesCache[$cacheKey])) {
-            return $this->generateMovesCache[$cacheKey];
-        }
-
-        $moves = [];
-        $us = $this->turn();
-        $them = self::swapColor($us);
-        $secondRank = [self::BLACK => self::RANK_7,
-                        self::WHITE => self::RANK_2];
-
-        if (!empty($options['square'])) {
-            $firstSquare = $lastSquare = $options['square'];
-            $singleSquare = true;
-        } else {
-            $firstSquare = self::SQUARES['a8'];
-            $lastSquare = self::SQUARES['h1'];
-            $singleSquare = false;
-        }
-
-        // legal moves only?
         $legal = isset($options['legal']) ? $options['legal'] : true;
-
-        // using anonymous function here, is it a bad practice?
-        // its because we stick to use "self::", if its not anonymous, then it have to be "Chess::"
-        $addMove = function ($turn, $board, &$moves, $from, $to, $flags) {
-            // if pawn promotion
-            if (
-                $board[$from]['type'] === self::PAWN &&
-                (self::rank($to) === self::RANK_8 || self::rank($to) === self::RANK_1)
-            ) {
-                $promotionPieces = [self::QUEEN, self::ROOK, self::BISHOP, self::KNIGHT];
-                foreach ($promotionPieces as $promotionPiece) {
-                    $moves[] = self::buildMove($turn, $board, $from, $to, $flags, $promotionPiece);
+        $push = function ($from, $to, $bits, $legal) {
+            if (!$legal || !($this->move($move))->kingAttacked($this->turn)) {
+                if ($this->board[$from]['type'] === self::PAWN && ($to >> 4 === 0 || $to >> 4 === 7)) {
+                    foreach ([self::QUEEN, self::ROOK, self::BISHOP, self::KNIGHT] as $promotionPiece) {
+                        yield [$from, $to, $bits, $promotionPiece];
+                    }
+                } else {
+                    yield [$from, $to, $bits, null];
                 }
-            } else {
-                $moves[] = self::buildMove($turn, $board, $from, $to, $flags);
             }
         };
-
-        for ($i = $firstSquare; $i <= $lastSquare; ++$i) {
-            if ($i & 0x88) {
-                $i += 7;
-                continue;
-            } // check edge of board
-
-            $piece = $this->board[$i];
-            if ($piece === null || $piece['color'] !== $us) {
-                continue;
-            }
-
-            if ($piece['type'] === self::PAWN) {
-                // single square, non-capturing
-                $square = $i + self::PAWN_OFFSETS[$us][0];
-                if ($this->board[$square] == null) {
-                    $addMove($us, $this->board, $moves, $i, $square, self::BITS['NORMAL']);
-
-                    // double square
-                    $square = $i + self::PAWN_OFFSETS[$us][1];
-                    if ($secondRank[$us] === self::rank($i) && $this->board[$square] === null) {
-                        $addMove($us, $this->board, $moves, $i, $square, self::BITS['BIG_PAWN']);
-                    }
-                }
-
-                // pawn captures
-                for ($j = 2; $j < 4; ++$j) {
-                    $square = $i + self::PAWN_OFFSETS[$us][$j];
-                    if ($square & 0x88) {
-                        continue;
-                    }
-                    if ($this->board[$square] !== null) {
-                        if ($this->board[$square]['color'] === $them) {
-                            $addMove($us, $this->board, $moves, $i, $square, self::BITS['CAPTURE']);
-                        }
-                    } elseif ($square === $this->epSquare) { // get epSquare from enemy
-                        $addMove($us, $this->board, $moves, $i, $this->epSquare, self::BITS['EP_CAPTURE']);
-                    }
-                }
-            } else {
-                for ($j = 0, $len = count(self::PIECE_OFFSETS[$piece['type']]); $j < $len; ++$j) {
-                    $offset = self::PIECE_OFFSETS[$piece['type']][$j];
-                    $square = $i;
-
-                    while (true) {
-                        $square += $offset;
-                        if ($square & 0x88) {
-                            break;
-                        }
-
-                        if ($this->board[$square] === null) {
-                            $addMove($us, $this->board, $moves, $i, $square, self::BITS['NORMAL']);
-                        } else {
-                            if ($this->board[$square]['color'] === $us) {
+        $secondRank = [self::BLACK => self::RANK_7,
+                       self::WHITE => self::RANK_2];
+        for ($square = 0; $square <= 119; ++$square) {
+            if ($square & 0x88) {
+                $square += 7;
+            } elseif ($piece = $this->board[$square]) {
+                if ($piece['color'] === $this->turn) {
+                    foreach (self::PIECE_OFFSETS[$piece['type']] as $offset) {
+                        for ($attacking = $square + $offset;
+                             $attacking & 0x88;
+                             $attacking += $offset) {
+                            if ($target = $this->board[$attacking]) {
+                                if ($piece['type'] === self::PAWN && $square === $this->epSquare) {
+                                    push($square, $attacking, self::BITS['EP_CAPTURE'], $legal);
+                                }
+                                if ($target[0] !== $this->turn) {
+                                    $push($square, $attacking, self::BITS['CAPTURE'], $legal);
+                                }
+                                break;
+                            } elseif ($piece['type'] === self::PAWN) {
+                                if (in_array($offset, [16, -16])) {
+                                    $push($square, $attacking, self::BITS['NORMAL'], $legal);
+                                }
+                                if (in_array($offset, [32, -32]) &&
+                                    !$this->board[$attacking - self::PIECE_OFFSETS[$piece['type']][0]] &&
+                                    $secondRank[$this->turn] === $square >> 4) {
+                                    $push($square, $attacking, self::BITS['BIG_PAWN'], $legal);
+                                }
+                            }
+                            $push($square, $attacking, self::BITS['NORMAL'], $legal);
+                            if (in_array($piece['type'], self::CRAWLERS)) {
                                 break;
                             }
-                            $addMove($us, $this->board, $moves, $i, $square, self::BITS['CAPTURE']);
-                            break;
-                        }
-
-                        if ($piece['type'] == self::KNIGHT || $piece['type'] == self::KING) {
-                            break;
                         }
                     }
                 }
             }
         }
-
-        // castling
-        // a) we're generating all moves
-        // b) we're doing single square move generation on king's square
-        if (!$singleSquare || $lastSquare === $this->kings[$us]) {
-            if ($this->castling[$us] & self::BITS['KSIDE_CASTLE']) {
-                $castlingFrom = $this->kings[$us];
-                $castlingTo = $castlingFrom + 2;
-
-                if (
-                    $this->board[$castlingFrom + 1] == null &&
-                    $this->board[$castlingTo] == null &&
-                    !$this->attacked($them, $this->kings[$us]) &&
-                    !$this->attacked($them, $castlingFrom + 1) &&
-                    !$this->attacked($them, $castlingTo)
-                ) {
-                    $addMove($us, $this->board, $moves, $this->kings[$us], $castlingTo, self::BITS['KSIDE_CASTLE']);
-                }
-            }
-
-            if ($this->castling[$us] & self::BITS['QSIDE_CASTLE']) {
-                $castlingFrom = $this->kings[$us];
-                $castlingTo = $castlingFrom - 2;
-
-                if (
-                    $this->board[$castlingFrom - 1] == null &&
-                    $this->board[$castlingFrom - 2] == null && // $castlingTo
-                    $this->board[$castlingFrom - 3] == null && // col "b", next to rock
-                    !$this->attacked($them, $this->kings[$us]) &&
-                    !$this->attacked($them, $castlingFrom - 1) &&
-                    !$this->attacked($them, $castlingTo)
-                ) {
-                    $addMove($us, $this->board, $moves, $this->kings[$us], $castlingTo, self::BITS['QSIDE_CASTLE']);
-                }
+        $them = self::swapColor($this->turn);
+        if ($this->castling[$this->turn] & self::BITS['KSIDE_CASTLE']) {
+            $castlingFrom = $this->kings[$this->turn];
+            $castlingTo = $castlingFrom + 2;
+            if ($this->board[$castlingFrom + 1] == null &&
+                $this->board[$castlingTo] == null &&
+                !$this->attacked($them, $this->kings[$this->turn]) &&
+                !$this->attacked($them, $castlingFrom + 1)) {
+                $push($this->kings[$this->turn], $castlingTo, self::BITS['KSIDE_CASTLE'], $legal);
             }
         }
-
-        // return all pseudo-legal moves (this includes moves that allow the king to be captured)
-        if (!$legal) {
-            $this->generateMovesCache[$cacheKey] = $moves;
-
-            return $moves;
-        }
-
-        // filter out illegal moves
-        $legalMoves = [];
-        foreach ($moves as $i => $move) { // in php we have foreach :-p
-            $this->makeMove($move);
-            if (!$this->kingAttacked($us)) {
-                $legalMoves[] = $move;
+        if ($this->castling[$this->turn] & self::BITS['QSIDE_CASTLE']) {
+            $castlingFrom = $this->kings[$this->turn];
+            $castlingTo = $castlingFrom - 2;
+            if ($this->board[$castlingFrom - 1] == null &&
+                $this->board[$castlingFrom - 2] == null &&
+                $this->board[$castlingFrom - 3] == null &&
+                !$this->attacked($them, $this->kings[$this->turn]) &&
+                !$this->attacked($them, $castlingFrom - 1)) {
+                $push($this->kings[$this->turn], $castlingTo, self::BITS['QSIDE_CASTLE'], $legal);
             }
-            $this->undoMove();
         }
-
-        $this->generateMovesCache[$cacheKey] = $legalMoves;
-
-        return $legalMoves;
     }
 
     /* The move function can be called with in the following parameters:
