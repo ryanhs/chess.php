@@ -861,10 +861,12 @@ class Chess
         $push = function ($from, $to, $bits, $legal) {
             if (!$legal || !($this->move($move))->kingAttacked($this->turn)) {
                 if ($this->board[$from]['type'] === self::PAWN && ($to >> 4 === 0 || $to >> 4 === 7)) {
-                    foreach ([ self::QUEEN, self::ROOK, self::BISHOP, self::KNIGHT] as $promotionPiece)
+                    foreach ([self::QUEEN, self::ROOK, self::BISHOP, self::KNIGHT] as $promotionPiece) {
                         yield [$from, $to, $bits, $promotionPiece];
-                } else
+                    }
+                } else {
                     yield [$from, $to, $bits, null];
+                }
             }
         };
         $secondRank = [self::BLACK => self::RANK_7,
@@ -879,23 +881,27 @@ class Chess
                              $attacking & 0x88;
                              $attacking += $offset) {
                             if ($target = $this->board[$attacking]) {
-                                if ($piece['type'] === self::PAWN && $square === $this->epSquare)
+                                if ($piece['type'] === self::PAWN && $square === $this->epSquare) {
                                     push($square, $attacking, self::BITS['EP_CAPTURE'], $legal);
-                                if ($target[0] !== $this->turn)
+                                }
+                                if ($target[0] !== $this->turn) {
                                     $push($square, $attacking, self::BITS['CAPTURE'], $legal);
+                                }
                                 break;
                             } elseif ($piece['type'] === self::PAWN) {
-                                if (in_array($offset, [16, -16]))
+                                if (in_array($offset, [16, -16])) {
                                     $push($square, $attacking, self::BITS['NORMAL'], $legal);
+                                }
                                 if (in_array($offset, [32, -32]) &&
-                                    !$this->board[$attacking-self::PIECE_OFFSETS[$piece['type']][0]] &&
+                                    !$this->board[$attacking - self::PIECE_OFFSETS[$piece['type']][0]] &&
                                     $secondRank[$this->turn] === $square >> 4) {
                                     $push($square, $attacking, self::BITS['BIG_PAWN'], $legal);
                                 }
                             }
                             $push($square, $attacking, self::BITS['NORMAL'], $legal);
-                            if (in_array($piece['type'], self::CRAWLERS))
+                            if (in_array($piece['type'], self::CRAWLERS)) {
                                 break;
+                            }
                         }
                     }
                 }
@@ -908,8 +914,9 @@ class Chess
             if ($this->board[$castlingFrom + 1] == null &&
                 $this->board[$castlingTo] == null &&
                 !$this->attacked($them, $this->kings[$this->turn]) &&
-                !$this->attacked($them, $castlingFrom + 1))
+                !$this->attacked($them, $castlingFrom + 1)) {
                 $push($this->kings[$this->turn], $castlingTo, self::BITS['KSIDE_CASTLE'], $legal);
+            }
         }
         if ($this->castling[$this->turn] & self::BITS['QSIDE_CASTLE']) {
             $castlingFrom = $this->kings[$this->turn];
@@ -918,8 +925,9 @@ class Chess
                 $this->board[$castlingFrom - 2] == null &&
                 $this->board[$castlingFrom - 3] == null &&
                 !$this->attacked($them, $this->kings[$this->turn]) &&
-                !$this->attacked($them, $castlingFrom - 1))
+                !$this->attacked($them, $castlingFrom - 1)) {
                 $push($this->kings[$this->turn], $castlingTo, self::BITS['QSIDE_CASTLE'], $legal);
+            }
         }
     }
 
