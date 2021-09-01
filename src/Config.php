@@ -33,21 +33,21 @@ class Config
 {
     /** @const PIECE_BITS A list of piece bits to provide fast piece detection. */
     public const PIECE_BITS = [
-        'pawn'   => 1,
+        'pawn' => 1,
         'knight' => 2,
         'bishop' => 4,
-        'queen'  => 8,
-        'king'   => 16,
+        'queen' => 8,
+        'king' => 16,
     ];
 
     /** @const PIECE_BITS A list of move bits to provide fast move type detection. */
     public const MOVE_BITS = [
-        'normal'     => 0,
-        'big_pawn'   => 1,
-        'capture'    => 2,
+        'normal' => 0,
+        'big_pawn' => 1,
+        'capture' => 2,
         'ep_capture' => 4,
-        'qs_castle'  => 8,
-        'ks_castle'  => 16
+        'qs_castle' => 8,
+        'ks_castle' => 16
     ];
 
     /** @const EMPTY_SQUARE Used to detect empty squares. */
@@ -55,7 +55,7 @@ class Config
 
     /** @const PAWN_OFFSETS A list of piece movements for pawns. */
     public const PAWN_OFFSETS = [
-        [ 16,  32,  17,  15],
+        [16,  32,  17,  15],
         [-16, -32, -17, -15],
     ];
 
@@ -63,9 +63,9 @@ class Config
     public const PIECE_OFFSETS = [
         self::PIECE_BITS['knight'] => [-18, -33, -31, -14,  18,  33,  31,  14],
         self::PIECE_BITS['bishop'] => [-17, -15,  17,  15],
-        self::PIECE_BITS['rook']   => [-16,   1,  16,  -1],
-        self::PIECE_BITS['queen']  => [-17, -16, -15,   1,  17,  16,  15,  -1],
-        self::PIECE_BITS['king']   => [-17, -16, -15,   1,  17,  16,  15,  -1],
+        self::PIECE_BITS['rook'] => [-16,   1,  16,  -1],
+        self::PIECE_BITS['queen'] => [-17, -16, -15,   1,  17,  16,  15,  -1],
+        self::PIECE_BITS['king'] => [-17, -16, -15,   1,  17,  16,  15,  -1],
     ];
 
     /** @const ATTACKS Used to detect piece attacks using bitwise operations. */
