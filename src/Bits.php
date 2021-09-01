@@ -33,10 +33,10 @@ class Bits
 {
     /** @const PIECE_BITS A list of piece bits to provide fast piece detection. */
     public const PIECE_BITS = [
-        'pawn'   => 0,
+        'pawn' => 0,
         'knight' => 1,
         'bishop' => 2,
-        'queen'  => 4,
-        'king'   => 8,
+        'queen' => 4,
+        'king' => 8,
     ];
 }
