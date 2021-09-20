@@ -882,7 +882,7 @@ class Chess
                              $attacking += $offset) {
                             if ($target = $this->board[$attacking]) {
                                 if ($piece['type'] === self::PAWN && $square === $this->epSquare) {
-                                    push($square, $attacking, self::BITS['EP_CAPTURE'], $legal);
+                                    $push($square, $attacking, self::BITS['EP_CAPTURE'], $legal);
                                 }
                                 if ($target[0] !== $this->turn) {
                                     $push($square, $attacking, self::BITS['CAPTURE'], $legal);
